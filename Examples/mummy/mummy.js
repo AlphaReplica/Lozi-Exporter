@@ -1,6 +1,6 @@
 var loziobject;
 	
-Lozi.load('examples/mummy/mummy_asset.js',function(obj)
+Lozi.load('Examples/mummy/mummy_asset.js',function(obj)
 {
 	loziobject = obj.object;
 	scene.add(loziobject);
