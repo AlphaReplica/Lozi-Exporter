@@ -1160,6 +1160,22 @@ var LoziObject = function(data,type)
 		}
 	}
 	
+	LoziObject.prototype.setScale = function(scaleX,scaleY,scaleZ)
+	{
+		if(scaleX)
+		{
+			scope.scale.x = (scope.scale.x<0) ? -scaleX : scaleX;
+		}
+		if(scaleY)
+		{
+			scope.scale.y = (scope.scale.y<0) ? -scaleY : scaleY;
+		}
+		if(scaleZ)
+		{
+			scope.scale.z = (scope.scale.z<0) ? -scaleZ : scaleZ;
+		}
+	}
+	
 	LoziObject.prototype.updateAnimations = function(delta)
 	{
 		for(var num = 0; num < animations.length; num++)
