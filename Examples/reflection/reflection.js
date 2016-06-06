@@ -1,6 +1,6 @@
 var loziobject;
 	
-Lozi.load('examples/reflection/reflection_asset.js',function(obj)
+Lozi.load('Examples/reflection/reflection_asset.js',function(obj)
 {
 	loziobject = obj.object;
 	scene.add(loziobject);
