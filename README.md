@@ -9,14 +9,13 @@ What it exports:<br>
 3. Skinned Mesh Animations<br>
 4. Blend Shapes<br>
 5. Object hierarchy<br>
+6. Texture Embedding as base64<br>
+7. Light data export<br>
+8. Camera data export<br>
 <br>
-At this moment mesh exporter only exports Uv and Uv2 coordinates to support Unity 4.6<br>
 
 <br>
-What's left:<br>
+To do:<br>
 1. Transform Animation (Perhaps it'll be generated in js side)<br>
-2. Texture Embedding as base64<br>
-3. Light data export<br>
-4. Camera data export<br>
-5. MonoBehaviour script global properties export<br>
-6. Implement exported data zipping<br>
+2. MonoBehaviour script global properties export<br>
+3. Implement exported data zipping<br>
