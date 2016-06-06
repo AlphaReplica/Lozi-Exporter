@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5368EB53-83D8-4239-9446-B7F0D390CE3B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>LoziExporter</RootNamespace>
+    <AssemblyName>Lozi-Exporter</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>False</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEngine">
+      <HintPath>C:\Program Files\Unity\Editor\Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>C:\Program Files\Unity\Editor\Data\Managed\UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEditor.UI">
+      <HintPath>C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\GUISystem\Editor\UnityEditor.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <HintPath>C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\System.Runtime.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\GUISystem\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>C:\Program Files\Unity\Editor\Data\UnityExtensions\Unity\Networking\UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>C:\Program Files\Unity\Editor\Data\Managed\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>C:\Program Files\Unity\Editor\Data\PlaybackEngines\iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="..\Src\Exporter\Animation\LoziAnimation.cs">
+      <Link>Src\Exporter\Animation\LoziAnimation.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Animation\LoziAnimationClip.cs">
+      <Link>Src\Exporter\Animation\LoziAnimationClip.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\BaseClasses\HierarchyManager.cs">
+      <Link>Src\Exporter\BaseClasses\HierarchyManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\BaseClasses\HierarchyObject.cs">
+      <Link>Src\Exporter\BaseClasses\HierarchyObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Collections\LoziAnimationCollection.cs">
+      <Link>Src\Exporter\Collections\LoziAnimationCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Collections\LoziMaterialCollection.cs">
+      <Link>Src\Exporter\Collections\LoziMaterialCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Collections\LoziMeshCollection.cs">
+      <Link>Src\Exporter\Collections\LoziMeshCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Collections\LoziTextureCollection.cs">
+      <Link>Src\Exporter\Collections\LoziTextureCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Helpers\Animation\LoziAnimationKeyPoint.cs">
+      <Link>Src\Exporter\Helpers\Animation\LoziAnimationKeyPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Helpers\Animation\LoziAnimationKeyPoints.cs">
+      <Link>Src\Exporter\Helpers\Animation\LoziAnimationKeyPoints.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Helpers\Material\LoziMaterialProperty.cs">
+      <Link>Src\Exporter\Helpers\Material\LoziMaterialProperty.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Helpers\Mesh\MorphObject.cs">
+      <Link>Src\Exporter\Helpers\Mesh\MorphObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Material\LoziMaterial.cs">
+      <Link>Src\Exporter\Material\LoziMaterial.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Mesh\LoziMesh.cs">
+      <Link>Src\Exporter\Mesh\LoziMesh.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Mesh\LoziMeshGeometry.cs">
+      <Link>Src\Exporter\Mesh\LoziMeshGeometry.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Mesh\LoziMeshMorpher.cs">
+      <Link>Src\Exporter\Mesh\LoziMeshMorpher.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Mesh\LoziMeshSkin.cs">
+      <Link>Src\Exporter\Mesh\LoziMeshSkin.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Object\LoziBone.cs">
+      <Link>Src\Exporter\Object\LoziBone.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Object\LoziCamera.cs">
+      <Link>Src\Exporter\Object\LoziCamera.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Object\LoziLight.cs">
+      <Link>Src\Exporter\Object\LoziLight.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Object\LoziObject.cs">
+      <Link>Src\Exporter\Object\LoziObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Texture\LoziTexture.cs">
+      <Link>Src\Exporter\Texture\LoziTexture.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\UI\LoziExporterUI.cs">
+      <Link>Src\UI\LoziExporterUI.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\UI\Views\AnimationsView.cs">
+      <Link>Src\UI\Views\AnimationsView.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\UI\Views\HierarchyView.cs">
+      <Link>Src\UI\Views\HierarchyView.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\UI\Views\MaterialsView.cs">
+      <Link>Src\UI\Views\MaterialsView.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\UI\Views\MeshesView.cs">
+      <Link>Src\UI\Views\MeshesView.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\UI\Views\TexturesView.cs">
+      <Link>Src\UI\Views\TexturesView.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\UI\LoziExporterUIResources.cs">
+      <Link>Src\UI\LoziExporterUIResources.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\LoziExporter.cs">
+      <Link>Src\Exporter\LoziExporter.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\MiniJSON.cs">
+      <Link>Src\Exporter\MiniJSON.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="..\Src\" />
+    <Folder Include="..\Src\UI\Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Src\UI\Resources\lozi-icon-bone.png">
+      <Link>Src\UI\Resources\lozi-icon-bone.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Src\UI\Resources\lozi-icon-camera.png">
+      <Link>Src\UI\Resources\lozi-icon-camera.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Src\UI\Resources\lozi-icon-cubemap.png">
+      <Link>Src\UI\Resources\lozi-icon-cubemap.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Src\UI\Resources\lozi-icon-light.png">
+      <Link>Src\UI\Resources\lozi-icon-light.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Src\UI\Resources\lozi-icon-material.png">
+      <Link>Src\UI\Resources\lozi-icon-material.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Src\UI\Resources\lozi-icon-mesh.png">
+      <Link>Src\UI\Resources\lozi-icon-mesh.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Src\UI\Resources\lozi-icon-object.png">
+      <Link>Src\UI\Resources\lozi-icon-object.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Src\UI\Resources\lozi-icon-objectAnimated.png">
+      <Link>Src\UI\Resources\lozi-icon-objectAnimated.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Src\UI\Resources\lozi-icon-scene.png">
+      <Link>Src\UI\Resources\lozi-icon-scene.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Src\UI\Resources\lozi-icon-skinAnimated.png">
+      <Link>Src\UI\Resources\lozi-icon-skinAnimated.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Src\UI\Resources\lozi-icon-skinnedMesh.png">
+      <Link>Src\UI\Resources\lozi-icon-skinnedMesh.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Src\UI\Resources\lozi-icon-texture.png">
+      <Link>Src\UI\Resources\lozi-icon-texture.png</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

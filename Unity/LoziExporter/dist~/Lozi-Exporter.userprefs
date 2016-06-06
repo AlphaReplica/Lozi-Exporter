@@ -1,0 +1,20 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="..\Src\UI\Views\TexturesView.cs">
+    <Files>
+      <File FileName="..\Src\Exporter\Object\LoziLight.cs" Line="55" Column="4" />
+      <File FileName="..\Src\Exporter\Object\LoziObject.cs" Line="1" Column="1" />
+      <File FileName="..\Src\Exporter\Object\LoziCamera.cs" Line="1" Column="1" />
+      <File FileName="d:\Dropbox\axali3\Lozi6\New Unity Project2\New Unity Project\Assets\LoziExporter\Src\UI\Views\HierarchyView.cs" Line="1" Column="1" />
+      <File FileName="..\Src\Exporter\Material\LoziMaterial.cs" Line="1" Column="1" />
+      <File FileName="..\Src\UI\LoziExporterUI.cs" Line="198" Column="5" />
+      <File FileName="..\Src\UI\LoziExporterUIResources.cs" Line="1" Column="1" />
+      <File FileName="..\Src\Exporter\Texture\LoziTexture.cs" Line="1" Column="1" />
+      <File FileName="..\Src\UI\Views\TexturesView.cs" Line="26" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
