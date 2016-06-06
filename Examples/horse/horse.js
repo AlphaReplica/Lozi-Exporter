@@ -1,6 +1,6 @@
 var loziobject;
 	
-Lozi.load('examples/horse/horse_asset.js',function(obj)
+Lozi.load('Examples/horse/horse_asset.js',function(obj)
 {
 	loziobject = obj.object;
 	scene.add(loziobject);
