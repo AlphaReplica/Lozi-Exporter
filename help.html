@@ -1,7 +1,141 @@
-<html>
-  <head>
-  </head>
-  <body>
-    Help page goes here
-  </body>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Lozi Page">
+    <meta name="author" content="Mujirishvili Beka">
+
+    <title>Lozi</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+</head>
+
+<body role="document">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="examples.html">Examples</a></li>
+                <li class="active"><a href="">How to</a></li>
+                <li><a href="docs.html">Docs</a></li>
+				<li><a href="https://github.com/AlphaReplica/Lozi-Exporter/blob/gh-pages/dist/lozi.zip?raw=true" style="padding-top:0; padding-bottom:0;"><button type="button" class="btn btn-lg btn-success" style="margin-top:2px;" >Download</button></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container theme-showcase" role="main">
+    <div class="jumbotron">
+        <h1>Lozi</h1>
+        <p>Export from Unity3D to WebGL</p>
+    </div>
+	<div class="page-header">
+        <h1>How To</h1>
+    </div>
+	<div class="container">
+	<ul class="list-group">
+	  <li class="list-group-item">Download Lozi archive from page</li>
+	  <li class="list-group-item">Unzip downloaded archive and add Lozi-Exporter.dll into unity project Assets folder</li>
+	  <li class="list-group-item">
+		<p>Before exporting make sure your skinned mesh has correct mesh root bone attached, remove any kind of gameobject, gun or sword for example because SkinnedMeshRenderer mostly doesn't provide correct amount of bones and Lozi will treat every gameobject inside of root as a bone</p>
+		<p>
+			How it should be in SkinnedMesh Hierachy:<br>
+			Gameobject<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;skinnedMesh<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root Bone<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bone1...<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bone2...<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Bone3...<br>
+		</p>
+		
+		<img src="images/howto1.png" />
+	  </li>
+	  <li class="list-group-item">
+		<p>At this time Lozi supports only one material per mesh</p>
+		<img src="images/howto5.png" />
+	  </li>
+	  <li class="list-group-item">
+		<p>If you have material with reflection use legacy cubeMap and add 6 skybox textures to cubeMap</p>
+		<img src="images/howto2.png" />
+	  </li>
+	  <li class="list-group-item">
+		<p>Currently Lozi only supports Legacy animations, to enable legacy animation choose mesh/rig/legacy, after that choose hierarchy gameobject and add animation clips</p>
+		<img src="images/howto3.png" />
+		<img src="images/howto4.png" />
+	  </li>
+	  <li class="list-group-item">
+		<p>Now hit Tools/Lozi Exporter and you can choose export whole scene or specific gameobject</p>
+		<img src="images/howto6.png" />
+	  </li>
+	  <li class="list-group-item">
+		<p>After choosing desired object you can click on advanced dropdown button and new view show up, Lozi uses same meshes, materials, textures and animations for gameobjects with same resources and utilizes as one chunk of data</p>
+		<p>You can choose what to export, for example if in animations panel export checkbox is unchosen animations will not be exported, same goes to other panels</p>
+		<img src="images/howto7.png" />
+	  </li>
+	  <li class="list-group-item">
+		<p>If we click on animation item in animation panel you can inspect which clips are going to export</p>
+		<img src="images/howto8.png" />
+	  </li>
+	  <li class="list-group-item">
+		<p>In textures panel if Include in Lozi is checked every texture will be converted to base64 and saved with lozi file, else it will create folder with textures near exported lozi file</p>
+		<p>you can change texture size in unity and Lozi will export in resolutions you choose</p>
+		<img src="images/howto9.png" />
+	  </li>
+	  <li class="list-group-item">
+		<p>You can choose material type for all materials or click on material item and choose type for material individually</p>
+		<p>In item dropdown every material property show up if it has a value assigned, if you have lightmaps baked, and mesh renderer uses lightmaps, it will show up in material properties list</p>
+		<p>You can choose texture for opacity map in transparent texture field, only texture properties of material will be available if they aren't empty</p>
+		<img src="images/howto10.png" />
+	  </li>
+	  <li class="list-group-item">
+		<p>In meshes panel on item click you can choose advanced options for mesh</p>
+		<img src="images/howto11.png" />
+	  </li>
+	  <li class="list-group-item">
+		<p>In Hierachy panel you can view whole hierarchy of object, to close or open permanently use Close All/Expand All Button</p>
+		<p>Because of Unity3D uses Axis order ZYX and WebGL Engines mostly use XYZ axis order you can use flip exported objects, if flip checked only first object will be flipped </p>
+		<p>By default Flip X is checked</p>
+		<img src="images/howto12.png" />
+	  </li>
+	  <li class="list-group-item">
+		<p>That's it! now click on "Select path" and choose desired destination, than click EXPORT</p>
+		<img src="images/howto13.png" />
+	  </li>
+	  <li class="list-group-item">
+		<p>After exporting you need a web serever</p>
+		<p>In html include Lozi.js after you include three.js library</p>
+		<p>Set up three.js with scene, camera and lights(if you don't included lights in exported package)</p>
+		<p>than use this simple function to load lozi package:</p>
+		<div class="bootstrap-demo">
+		  <pre><p>var loziobject;
+Lozi.load('your_awesome_thingy.js',function(obj)
+{
+	loziobject = obj.object;
+	scene.add(loziobject);
+},
+onProgress,
+onerror);
+			</p></pre>
+		</div>
+		<p>returned object "obj" contains 2 parameters:<br>
+			- object - Generated Object which extends engines object by type<br>
+			- data   - data object which includes everything from generated geometries to downloaded textures</p>
+		<p>and that's it, now you can view your exported object if you done everything right</p>
+		<p><a href="https://github.com/AlphaReplica/Lozi-Exporter/tree/gh-pages/Examples">view examples</a></p>
+		<p><b>Every engine differs, every exported mesh with texture will be exactly same as in unity3D but difference may be huge in lighting, so take time and make experiments to change material types and light variables</b></p>
+	  </li>
+	</ul>
+	</div>
+    <div class="page-header">
+    </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="js/bootstrap.min.js"></script>
+</body>
 </html>
