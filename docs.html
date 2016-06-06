@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Lozi Page">
+    <meta name="author" content="Mujirishvili Beka">
+
+    <title>Lozi</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+</head>
+
+<body role="document">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="examples.html">Examples</a></li>
+                <li><a href="help.html">How to</a></li>
+                <li class="active"><a href="">Docs</a></li>
+				<li><a href="https://github.com/AlphaReplica/Lozi-Exporter/blob/gh-pages/dist/lozi.zip?raw=true" style="padding-top:0; padding-bottom:0;"><button type="button" class="btn btn-lg btn-success" style="margin-top:2px;" >Download</button></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container theme-showcase" role="main">
+    <div class="jumbotron">
+        <h1>Lozi</h1>
+        <p>Export from Unity3D to WebGL</p>
+    </div>
+	<div class="page-header">
+        <h1>Documentation</h1>
+    </div>
+	<div class="container">
+	<ul class="list-group">
+	  <li class="list-group-item"><b>Lozi</b></li>
+	  <div class="col-md">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">load(url:string, complete:function, onProgress:function ( ProgressObject ), error:function):void</td>
+                <td class="col-md-4">loads lozi json string data from url</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">loadFromString(string:string, complete:function, onProgress:function ( ProgressObject ), error:function):void</td>
+                <td class="col-md-4">loads lozi json string</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">loadFromData(string:string, complete:function, onProgress:function ( ProgressObject ), error:function):void</td>
+                <td class="col-md-4">loads lozi json data</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+		
+		<li class="list-group-item"><b>ProgressObject params</b></li>
+	  <div class="col-md">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">totalProgress:int</td>
+                <td class="col-md-4">total loaded progress</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">dataProgress:int</td>
+                <td class="col-md-4">loaded data progress</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">textureProgress:int</td>
+                <td class="col-md-4">loaded textures progress</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+		
+		<li class="list-group-item"><b>CompleteObject params</b></li>
+	    <div class="col-md">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">data:Object</td>
+                <td class="col-md-4">parsed and generated Json object</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">object:LoziObject</td>
+                <td class="col-md-4">generated loziObject of type</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+		
+		<li class="list-group-item"><b>Lozi.Math</b></li>
+	    <div class="col-md">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">radians(degree:float):float</td>
+                <td class="col-md-4">converts degrees to radians</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">degrees(degree:float):float</td>
+                <td class="col-md-4">converts radians to degrees</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+		<li class="list-group-item"><b>LoziObject</b></li>
+	    <div class="col-md">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">setActiveCamera(index:int):void</td>
+                <td class="col-md-4">sets active camera by index</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">activeCamera():Camera</td>
+                <td class="col-md-4">gets active camera, by default camera with index 0 is returned</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">flip(flipX:boolean, flipY:boolean,flipZ :boolean):void</td>
+                <td class="col-md-4">flips object by given axis, if one of those params equals true materials change face from front to back</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">scale(scaleX:float, scaleY:float, scaleZ:float):void</td>
+                <td class="col-md-4">scales object, recommended to use this function instead of object.scale.x/y/z</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">updateAnimations(delta:float):void</td>
+                <td class="col-md-4">updates all animations currently played by objects children</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">euler(x:float, y:float, z:float):void</td>
+                <td class="col-md-4">rotates object to degrees</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">objects():Array</td>
+                <td class="col-md-4">returns array of objects including self and children</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">geometries():Array</td>
+                <td class="col-md-4">returns array of generated geometries from loaded JSON data</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">data():Object</td>
+                <td class="col-md-4">returns parsed and generated data from loaded JSON data</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">images():Array</td>
+                <td class="col-md-4">returns array of loaded images</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">textures():Array</td>
+                <td class="col-md-4">returns array of generated textures</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">materials():Array</td>
+                <td class="col-md-4">returns array of generated materials</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">lights():Array</td>
+                <td class="col-md-4">returns array of generated lights</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">cameras():Array</td>
+                <td class="col-md-4">returns array of generated cameras</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">animations():Array</td>
+                <td class="col-md-4">returns array of animations of self and children</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+	</ul>
+	</div>
+    <div class="page-header">
+    </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>
