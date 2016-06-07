@@ -535,13 +535,14 @@ var Lozi =
 
 					xmlHTTP.onprogress = function( e )
 					{
-						if ( e.lengthComputable )
+						img.completedPercentage = ( e.loaded / e.total );
+						if(img.completedPercentage<0)
 						{
-							img.completedPercentage = ( e.loaded / e.total );
-							if(img.onProgress)
-							{
-								img.onProgress(img);
-							}
+							img.completedPercentage = 1;
+						}
+						if(img.onProgress)
+						{
+							img.onProgress(img);
 						}
 					};
 
