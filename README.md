@@ -1,7 +1,7 @@
 # Lozi-Exporter
 Export models, animations and textures from unity3D into json file for major WebGL engines
 
-Project is still in development!
+<a href="http://alphareplica.github.io/Lozi-Exporter/">Visit project page for more</a>
 
 What it exports:<br>
 1. Meshes<br>
