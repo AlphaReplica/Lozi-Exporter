@@ -284,12 +284,12 @@ var Lozi =
 					{
 						if(dataObj.textureData[0])
 						{
-							var image     	   = Lozi.Texture.loadImage(dataObj.textureData[0]);
-							var texture   	   = new THREE.Texture();
-							texture.texID	   = dataObj.id;
-							texture.name  	   = dataObj.name;
-							texture.image 	   = image;
-							texture.usedImages = [texture.image];
+							var image     	     = Lozi.Texture.loadImage(dataObj.textureData[0]);
+							var texture   	     = new THREE.Texture();
+							texture.texID	     = dataObj.id;
+							texture.name  	     = dataObj.name;
+							texture.image 	     = image;
+							texture.usedImages   = [texture.image];
 							texture.image.onload = function()
 							{
 								texture.needsUpdate = true;
@@ -509,20 +509,32 @@ var Lozi =
 		loadImage:function(imageData)
 		{
 			if(!Image.onProgress)
-			{
+			{	
 				Image.prototype.onProgress = function(){}
 				
 				Image.prototype.onLoaded   = function(){}
 				
+				Image.prototype.check      = function()
+				{
+					if(this.isBase64)
+					{
+						if(this.onProgress)
+						{
+							this.onProgress(this);
+						}
+						if(this.onLoaded)
+						{
+							this.onLoaded();
+						}
+					}
+				}
+				
 				Image.prototype.load = function(url)
 				{
-					var img     = this;
-					var xmlHTTP = new XMLHttpRequest();
-
-					img.completedPercentage = 0;
-					xmlHTTP.open('GET', url , true );
-					xmlHTTP.responseType = 'arraybuffer';
-
+					var img      = this;
+					var xmlHTTP  = new XMLHttpRequest();
+					img.isBase64 = false;
+					
 					xmlHTTP.onload = function( e )
 					{
 						var blob = new Blob( [ this.response ]);
@@ -550,7 +562,19 @@ var Lozi =
 					{
 						img.completedPercentage = 0;
 					};
-					xmlHTTP.send();
+					
+					if(url.indexOf("data:image/png;base64,")>-1)
+					{
+						img.src 				= url;
+						img.completedPercentage = 1;
+						img.isBase64            = true;
+					}
+					else
+					{
+						xmlHTTP.open('GET', url , true );
+						xmlHTTP.responseType = 'arraybuffer';
+						xmlHTTP.send();
+					}
 				}
 			}
 			var image = new Image();
@@ -840,6 +864,14 @@ var Lozi =
 				data.generatedAssets.materials = Lozi.Material.generateMaterials(data.assets.materials,data);
 			}
 			
+			
+			if(data.generatedAssets.images)
+			{
+				for(var num = 0; num < data.generatedAssets.images.length; num++)
+				{
+					data.generatedAssets.images[num].check();
+				}
+			}
 			if(!data.generatedAssets.images || (data.generatedAssets.images && data.generatedAssets.images.length==0))
 			{
 				if(onProgress)
