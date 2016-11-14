@@ -1,0 +1,73 @@
+<html>
+ <head>
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r82/three.js"></script>
+ <script type="text/javascript" src="../js/Lozi.js"></script>
+ <script>
+ /*
+ Scene example, where light and camera exported along with model
+ */
+  var renderer, clock;
+  var loziobject;
+  function onload()
+  {
+	/* initializing three.js and adding renderer, notice that no lights and cameras are initialized */
+	
+	window.addEventListener( 'resize', onWindowResize, false );
+	
+	clock 	 = new THREE.Clock();
+	renderer = new THREE.WebGLRenderer();
+	
+	renderer.shadowMap.enabled = true;
+	renderer.shadowMap.type    = THREE.PCFSoftShadowMap;
+	renderer.setClearColor(0x333333, 1);
+	
+	document.body.appendChild(renderer.domElement);
+	
+	/* loading exported model */
+	Lozi.load('helicopter.lozi.js',function(obj)
+	{
+	   loziobject = obj.object;
+	   onWindowResize();
+	});
+	
+	render();
+	onWindowResize();
+   }
+   
+   function onWindowResize()
+   {
+        /* if object exists get first camera from cameras array and update aspect ratio and projection matrix */
+	if(loziobject)
+	{
+	   loziobject.activeCamera().aspect = window.innerWidth / window.innerHeight;
+	   loziobject.activeCamera().updateProjectionMatrix();
+	}
+	
+	if(renderer)
+	{
+	   renderer.setSize( window.innerWidth, window.innerHeight );
+	   renderer.setPixelRatio( window.devicePixelRatio );
+	}
+   }
+   
+   function render()
+   {
+        /* if object exists render it with first camera from object's cameras array,
+	   notice that we are adding object in renderer instead of scene,
+	   that's because object was exported as scene and lozi inherited object from scene,
+	   after render we are getting vent and heli container object from objects array,
+	   (in this case vent is third and container is seventh index in objects array) and rotate*/
+	if(loziobject)
+	{
+	   var delta = clock.getDelta();
+	   renderer.render(loziobject, loziobject.activeCamera());
+	   loziobject.objects()[7].rotateY(-delta/2);
+	   loziobject.objects()[3].rotateZ(-delta*2);
+	}
+	requestAnimationFrame(render);
+   }
+  </script>
+ </head>
+ <body onload="onload()" style="margin:0;">
+ </body>
+</html>

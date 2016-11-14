@@ -1,0 +1,125 @@
+<html>
+ <head>
+ <style>
+   body
+   {
+	margin:0;
+   }
+   
+   #canvasElement
+   {
+	position:absolute;
+   }
+   
+   #buttonCont
+   {
+	position:absolute;
+   }
+   
+   .button
+   {
+	background-color:#ffffff;
+	text-align:center;
+	margin:5px;
+	width:100px;
+	height:20px;
+	cursor:pointer;
+   }
+  </style>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r82/three.js"></script>
+  <script type="text/javascript" src="../js/Lozi.min.js"></script>
+  <script>
+   var camera, scene, renderer, clock;
+   var loziobject;
+   
+   function onload()
+   {
+	/* initializing three.js and adding renderer, no lights are initialized,
+	because object what we are loading uses lit materials */
+	
+	window.addEventListener( 'resize', onWindowResize, false );
+	
+	clock 	 = new THREE.Clock();
+	scene    = new THREE.Scene();
+	renderer = new THREE.WebGLRenderer();
+	
+	renderer.setClearColor( 0x333333, 1 );
+	
+	camera	= new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 2000 );
+	camera.position.y =  2;
+	camera.position.z =  8;
+	
+	/* adding canvas element inside div element to enable other div elements overlayed */
+	renderer.domElement.style.setProperty('float','left');
+	document.getElementById("canvasCont").appendChild(renderer.domElement);
+	
+	/* loading exported model, after loading adding it in scene and calling play animation */
+	Lozi.load('mummy.lozi.js',function(obj)
+	{
+	   loziobject = obj.object;
+	   scene.add(loziobject);	
+	   loziobject.playAnimation(0,"idle");
+	});
+	
+	render();
+	onWindowResize();
+   }
+   
+   function onWindowResize()
+   {
+        /* on resize camera aspect ratio and projection matrix are updated, same goes to renderer */
+	if(camera)
+	{
+	   camera.aspect = window.innerWidth / window.innerHeight;
+	   camera.updateProjectionMatrix();
+	}
+	
+	if(renderer)
+	{
+	   renderer.setSize( window.innerWidth, window.innerHeight );
+	   renderer.setPixelRatio( window.devicePixelRatio );
+	}
+   }
+	
+   function playAnimation(anim,continueOnPrev)
+   {
+        /* nothing fancy here, if object exists fades animation by anim param string,
+	continueOnPrev continues previous animation */
+	if(loziobject)
+	{
+		if(continueOnPrev === undefined)
+		{
+			continueOnPrev = true;
+		}
+	   loziobject.playAnimation(0,anim,0.5,continueOnPrev);
+	}
+   }
+   
+   function render()
+   {
+        /* if object exists it updates animation */
+	renderer.render(scene, camera);
+	
+	if(loziobject)
+	{
+		 loziobject.update(0.75 * clock.getDelta());
+	}
+	requestAnimationFrame(render);
+   }
+  </script>
+ </head>
+ <body onload="onload()">
+ <div id="canvasCont"></div>
+ <div id="buttonCont">
+  <div class="button" onclick="playAnimation('idle')">idle</div>
+  <div class="button" onclick="playAnimation('idle_v2')">idle_v2</div>
+  <div class="button" onclick="playAnimation('run')">run</div>
+  <div class="button" onclick="playAnimation('takeDamage')">takeDamage</div>
+  <div class="button" onclick="playAnimation('lowKick')">lowKick</div>
+  <div class="button" onclick="playAnimation('hit')">hit</div>
+  <div class="button" onclick="playAnimation('die',false)">die</div>
+  <div class="button" onclick="playAnimation('death',false)">death</div>
+  <div class="button" onclick="playAnimation('attack')">attack</div>
+ </div>
+ </body>
+</html>
