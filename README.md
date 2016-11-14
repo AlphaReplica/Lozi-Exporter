@@ -12,10 +12,12 @@ What it exports:<br>
 6. Texture Embedding as base64<br>
 7. Light data export<br>
 8. Camera data export<br>
+9. MonoBehaviour script public properties<br>
+10. Colliders
+11. Sounds
 <br>
 
 <br>
 To do:<br>
 1. Transform Animation (Perhaps it'll be generated in js side)<br>
-2. MonoBehaviour script global properties export<br>
-3. Implement exported data zipping<br>
+2. Implement exported data zipping<br>
