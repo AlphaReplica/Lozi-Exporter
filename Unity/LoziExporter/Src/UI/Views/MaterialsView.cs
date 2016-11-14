@@ -18,10 +18,11 @@ namespace Lozi.UI
 	{
 		private string[]     		 materialTypesOpt = new string[] {"Standard", "Lit", "Phong", "Lambert","By Selection"};
 		private string[]     		 materialTypes    = new string[] {"Standard", "Lit", "Phong", "Lambert"};
+		private string[]     		 materialSide     = new string[] {"Front"   , "Back", "Double"};
 		private Texture2D[]  		 icons;
 		private LoziMaterial 		 tempMat;
 		private LoziMaterialProperty matProperties;
-		private int			 		 materialTypesIndex = 0;
+		private int			 		 materialTypesIndex = 1;
 		private int			 		 oldMaterialTypesIndex;
 		private bool 		 		 unfolded;
 
@@ -119,7 +120,7 @@ namespace Lozi.UI
 		// Draws materials if exists
 		public bool drawMaterials()
 		{
-			GUI.skin.box.margin =  new RectOffset(10,10,0,0);
+			GUI.skin.box.margin =  new RectOffset(3,2,0,0);
 			
 			if(LoziExporter.instance.materialCollection!=null &&
 			   LoziExporter.instance.materialCollection.materials.Count>0)
@@ -140,12 +141,20 @@ namespace Lozi.UI
 
 					GUILayout.Label(tempMat.name); 
 					EditorGUILayout.EndHorizontal();
+
+					if(materialTypesIndex!=4)
+					{
+						tempMat.materialType = materialTypesIndex;
+					}
+
 					if(tempMat.isFoldedInUI)
 					{
 						GUI.Box(EditorGUILayout.BeginVertical("Box"), GUIContent.none);
 						GUILayout.Space(5);
-						tempMat.materialType  = EditorGUILayout.Popup("Material Type", tempMat.materialType, materialTypes);
+						tempMat.materialType  = EditorGUILayout.Popup("Material Type"      , tempMat.materialType, materialTypes);
+						tempMat.materialSide  = EditorGUILayout.Popup("Material Side"	   , tempMat.materialSide, materialSide);
 						tempMat.transparentID = EditorGUILayout.Popup("Transparent Texture", tempMat.transparentID, tempMat.textureProperties);
+
 						if(materialTypesIndex!=4 && tempMat.materialType!=materialTypesIndex)
 						{
 							materialTypesIndex = 4;

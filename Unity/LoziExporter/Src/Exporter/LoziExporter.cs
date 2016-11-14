@@ -17,11 +17,14 @@ namespace Lozi
 	{
 		private static LoziExporter loziInstance;
 		
-		public bool					   exportAnimations = true;
-		public bool					   exportMeshes     = true;
-		public bool					   exportMaterials  = true;
-		public bool					   exportTextures   = true;
-		public bool					   exportHierarchy  = true;
+		public  bool				   exportSounds		= true;
+		public  bool				   exportAnimations = true;
+		public  bool				   exportMeshes     = true;
+		public  bool				   exportMaterials  = true;
+		public  bool				   exportTextures   = true;
+		public  bool				   exportHierarchy  = true;
+		private bool                   includeColliders = false;
+		private bool                   includeScripts   = false;
 
 		public string	  			   pathToSave;
 		public GameObject 			   sceneObject;
@@ -30,12 +33,13 @@ namespace Lozi
 		public LoziTextureCollection   textureCollection;
 		public LoziMaterialCollection  materialCollection;
 		public LoziAnimationCollection animationCollection;
+		public LoziSoundCollection	   soundCollection;
 
 		public static string Version
 		{
 			get
 			{
-				return "0.8";
+				return "0.94";
 			}
 		}
 
@@ -57,6 +61,34 @@ namespace Lozi
 				return loziInstance;
 			}
 		}
+		
+		public bool exportColliders
+		{
+			get
+			{
+				return includeColliders;
+			}
+			set
+			{
+				includeColliders = value;
+				target.exportColliders = value;
+				meshCollection.exportColliders = value;
+			}
+		}
+		
+		public bool exportScripts
+		{
+			get
+			{
+				return includeScripts;
+			}
+			set
+			{
+				includeScripts = value;
+				target.exportScriptProperties = value;
+				meshCollection.exportScriptProperties = value;
+			}
+		}
 
 		public void setGameObject(GameObject obj)
 		{
@@ -64,7 +96,10 @@ namespace Lozi
 			textureCollection   = new LoziTextureCollection(obj);
 			materialCollection  = new LoziMaterialCollection(obj);
 			animationCollection = new LoziAnimationCollection(obj);
+			soundCollection     = new LoziSoundCollection(obj);
 			target 		   		= new LoziObject(obj,((sceneObject==obj) ? ObjectType.Scene : ObjectType.None));
+			target.generateScripts();
+			meshCollection.generateScriptProperties();
 		}
 
 		public void setSceneObject()
@@ -114,6 +149,10 @@ namespace Lozi
 				{
 					animationCollection.Dispose();
 				}
+				if(soundCollection!=null)
+				{
+					soundCollection.Dispose();
+				}
 				DestroyImmediate(sceneObject);
 				sceneObject = null;
 			}
@@ -139,9 +178,18 @@ namespace Lozi
 				string path = "";
 				if(!textureCollection.includeTexturesInFile)
 				{
-					path = createDirectory();
+					path = createDirectory("textures");
 				}
 				textureCollection.generate(path);
+			}
+			if(exportSounds)
+			{
+				string path = "";
+				if(!soundCollection.includeSoundsInFile)
+				{
+					path = createDirectory("sounds");
+				}
+				soundCollection.generate(path);
 			}
 			if(exportAnimations)
 			{
@@ -154,6 +202,7 @@ namespace Lozi
 			if(exportMeshes)
 			{
 				assetsDict["meshes"] = meshCollection.meshesProperties;
+				assetsDict["bones" ] = meshCollection.boneProperties;
 			}
 			if(exportTextures)
 			{
@@ -166,6 +215,10 @@ namespace Lozi
 			if(exportAnimations)
 			{
 				assetsDict["animations"] = animationCollection.animationsDictionary;
+			}
+			if(exportSounds)
+			{
+				assetsDict["sounds"] = soundCollection.soundProperties;
 			}
 			
 			mainDict  ["assets"] = assetsDict;
@@ -181,7 +234,7 @@ namespace Lozi
 			sr.Close();
 		}
 
-		private string createDirectory()
+		private string createDirectory(string sub)
 		{
 			string str = "";
 			string[] arr  = pathToSave.Split('/');
@@ -190,13 +243,17 @@ namespace Lozi
 			{
 				str+=arr[num]+"/";
 			}
-			str += target.name+"_textures";
+			str += target.name+"_data";
 
 			if (!Directory.Exists(str)) 
 			{
 				Directory.CreateDirectory(str);
 			}
-			return str;
+			if(!Directory.Exists(str+"/"+sub))
+			{
+				Directory.CreateDirectory(str+"/"+sub);
+			}
+			return str+"/"+sub;
 		}
 	}
 }

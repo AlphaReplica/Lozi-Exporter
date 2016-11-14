@@ -68,7 +68,7 @@ namespace Lozi.UI
 		// Draws animation objects if exits
 		public bool drawAnimations()
 		{
-			GUI.skin.box.margin =  new RectOffset(10,10,0,0);
+			GUI.skin.box.margin =  new RectOffset(3,2,0,0);
 			
 			if(LoziExporter.instance.animationCollection!=null &&
 			   LoziExporter.instance.animationCollection.animations.Count>0)

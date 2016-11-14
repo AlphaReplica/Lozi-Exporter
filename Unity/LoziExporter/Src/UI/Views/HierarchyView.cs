@@ -55,10 +55,11 @@ namespace Lozi.UI
 			EditorGUILayout.EndHorizontal();
 			
 			GUI.Box(EditorGUILayout.BeginHorizontal("Label"),GUIContent.none,GUIStyle.none);
+			GUILayout.BeginVertical();
 			LoziExporter.instance.exportHierarchy = GUILayout.Toggle(LoziExporter.instance.exportHierarchy,"Export");
-			LoziExporter.instance.target.flip[0]  = GUILayout.Toggle(LoziExporter.instance.target.flip[0],"Flip X");
-			LoziExporter.instance.target.flip[1]  = GUILayout.Toggle(LoziExporter.instance.target.flip[1],"Flip Y");
-			LoziExporter.instance.target.flip[2]  = GUILayout.Toggle(LoziExporter.instance.target.flip[2],"Flip Z");
+			LoziExporter.instance.exportColliders = GUILayout.Toggle(LoziExporter.instance.exportColliders,"Export Colliders");
+			LoziExporter.instance.exportScripts   = GUILayout.Toggle(LoziExporter.instance.exportScripts  ,"Export Scripts");
+			GUILayout.EndVertical();
 			EditorGUILayout.EndHorizontal();
 			
 			EditorGUILayout.EndVertical();
@@ -81,7 +82,7 @@ namespace Lozi.UI
 		// Draws hierarchy view
 		public void drawHierarchy()
 		{
-			GUI.skin.box.margin = new RectOffset(10,10,0,0); 
+			GUI.skin.box.margin =  new RectOffset(3,2,0,0);
 			if(LoziExporter.instance.target!=null)
 			{
 				Rect vertical = EditorGUILayout.BeginVertical("Box");

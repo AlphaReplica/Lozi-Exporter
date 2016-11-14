@@ -28,12 +28,13 @@ namespace Lozi
 	public class LoziObject
 	{
 		public bool 			isFoldedInUI;
-		public List<bool>       	    flip;
-
+		
+		private bool          includeScripts;
+		private bool        includeColliders;
 		private int		       	    objectId;
 		private string            objectName;
 		private string             objectTag;
-		private int		          materialID;
+		private List<int>	          materialIDs;
 		private int		              meshID;
 		private ObjectType              type;
 		private GameObject  		     obj;
@@ -42,14 +43,17 @@ namespace Lozi
 		private LoziObject			  parent;
 		private LoziMesh				mesh;
 		private LoziMaterial    	material;
+		private List<LoziMaterial> materials;
 		private LoziAnimation 	   animation;
 		private LoziCamera			  camera;
 		private LoziLight			   light;
+		private LoziCollider    	collider;
+		private LoziScriptProperties   props;
+		private LoziSoundSource        sound;
 
 		// Sets properties and recursively adds children objects to children array
 		public LoziObject(GameObject target,ObjectType objType)
 		{
-			flip       = new List<bool>(){true,false,false};
 			obj        = target;
 			objectId   = target.transform.GetInstanceID();
 
@@ -72,25 +76,43 @@ namespace Lozi
 		//sets component of type if exists
 		private void setComponents()
 		{
-			if(LoziMesh.hasMesh(obj))
+			if(!isBone)
 			{
-				mesh = LoziExporter.instance.meshCollection.getMeshByGameObject(obj);
-			}
-			if(LoziMaterial.hasMaterial(obj))
-			{
-				material = LoziExporter.instance.materialCollection.getMaterialByGameObject(obj);
-			}
-			if(LoziCamera.hasCamera(obj))
-			{
-				camera = new LoziCamera(obj);
-			}
-			if(LoziLight.hasLight(obj))
-			{
-				light = new LoziLight(obj);
-			}
-			if(LoziAnimation.hasAnimation(obj))
-			{
-				animation = LoziExporter.instance.animationCollection.getAnimationByGameObject(obj);
+				if(LoziSoundSource.hasSound(obj))
+				{
+					if(LoziSoundSource.hasClip(obj))
+					{
+						sound = new LoziSoundSource(obj);
+					}
+				}
+				if(LoziCollider.hasCollider(obj))
+				{
+					collider = new LoziCollider(obj);
+				}
+				if(LoziMesh.hasMesh(obj))
+				{
+					mesh = LoziExporter.instance.meshCollection.getMeshByGameObject(obj);
+				}
+				if(LoziMaterial.hasMaterial(obj))
+				{
+					materials = LoziExporter.instance.materialCollection.getMaterialsByGameObject(obj);
+				}
+				if(LoziCamera.hasCamera(obj))
+				{
+					camera = new LoziCamera(obj);
+				}
+				if(LoziLight.hasLight(obj))
+				{
+					light = new LoziLight(obj);
+				}
+				if(LoziAnimation.hasAnimation(obj))
+				{
+					animation = LoziExporter.instance.animationCollection.getAnimationByGameObject(obj);
+				}
+				if(LoziScriptProperties.hasScript(obj))
+				{
+					props = new LoziScriptProperties(obj);
+				}
 			}
 		}
 
@@ -125,9 +147,9 @@ namespace Lozi
 					if(camera.orthographic){type = ObjectType.OrthographicCamera;}
 					else				   {type = ObjectType.PerspectiveCamera; }
 				}
-				if(material!=null)
+				if(materials!=null && materials.Count>0)
 				{
-					materialID = material.id;
+					materialIDs = LoziExporter.instance.materialCollection.getMaterialIds(materials);
 				}
 				if(animation!=null)
 				{
@@ -162,14 +184,6 @@ namespace Lozi
 			}
 		}
 
-		public List<float> flipArray
-		{
-			get
-			{
-				return new List<float>(){(flip[0]) ? -1 : 1,(flip[1]) ? -1 : 1,(flip[2]) ? -1 : 1};
-			}
-		}
-
 		public bool hasChildren(GameObject obj)
 		{
 			if(obj.transform.childCount>0)
@@ -177,6 +191,58 @@ namespace Lozi
 				return true;
 			}
 			return false;
+		}
+		
+		public bool exportColliders
+		{
+			get
+			{
+				return includeColliders;
+			}
+			set
+			{
+				if(value!=includeColliders)
+				{
+					includeColliders = value;
+					
+					for(int num = 0; num < children.Count; num++)
+					{
+						children[num].exportColliders = value;
+					}
+				}
+			}
+		}
+		
+		public bool exportScriptProperties
+		{
+			get
+			{
+				return includeScripts;
+			}
+			set
+			{
+				if(value!=includeScripts)
+				{
+					includeScripts = value;
+					
+					for(int num = 0; num < children.Count; num++)
+					{
+						children[num].exportScriptProperties = value;
+					}
+				}
+			}
+		}
+
+		public void generateScripts()
+		{
+			if(props!=null)
+			{
+				props.generate();
+			}
+			for(int num = 0; num < children.Count; num++)
+			{
+				children[num].generateScripts();
+			}
 		}
 
 		// current object properties as dictionary
@@ -196,10 +262,10 @@ namespace Lozi
 					}
 					dict["type"		] = (int)type;
 					dict["transform"] = getObjectTransform(obj);
-					dict["flip"		] = flipArray;
-					if(material!=null && materialID!=0)
+
+					if(materials!=null && materials.Count>0  && materialIDs!=null && materialIDs.Count>0)
 					{
-						dict["materialID"] = materialID;
+						dict["materials"] = materialIDs;
 					}
 					if(mesh!=null && meshID!=0)
 					{
@@ -216,6 +282,18 @@ namespace Lozi
 					if(camera!=null)
 					{
 						dict["cameraData"] = camera.objectProperties;
+					}
+					if(collider!=null && collider.hasColliderInfo && includeColliders)
+					{
+						dict["collider"] = collider.objectProperties;
+					}
+					if(props!=null && includeScripts)
+					{
+						dict["scriptProperties"] = props.objectProperties;
+					}
+					if(sound!=null)
+					{
+						dict["sound"] = sound.sourceProperties;
 					}
 					if(children.Count>0)
 					{
@@ -254,20 +332,24 @@ namespace Lozi
 		{
 			Dictionary<string,object> dict = new Dictionary<string,object>();
 
+			
+			Quaternion rotQuat = obj.transform.localRotation;
+			
+			rotQuat   = new Quaternion(-rotQuat.x,rotQuat.y,rotQuat.z,-rotQuat.w);
 			Vector3 posVec3   = obj.transform.localPosition;
-			Vector3 rotVec3   = obj.transform.localEulerAngles;
+			Vector3 rotVec3   = rotQuat.eulerAngles;
 			Vector3 scaleVec3 = obj.transform.localScale;
 
 			if(mesh!=null)
 			{
-				if(type == ObjectType.SkinnedMesh && this.parent.type == ObjectType.AnimationObject)
+				if(type == ObjectType.SkinnedMesh && this.parent!=null && this.parent.type == ObjectType.AnimationObject)
 				{
 					rotVec3 = Vector3.zero;
 				}
 			}
 
-			dict["position"] = new List<float>(){posVec3.x,    posVec3.y,  posVec3.z};
-			dict["rotation"] = new List<float>(){rotVec3.x,    rotVec3.y,  rotVec3.z};
+			dict["position"] = new List<float>(){-posVec3.x,    posVec3.y,  posVec3.z};
+			dict["rotation"] = new List<float>(){rotVec3.x,     rotVec3.y,  rotVec3.z};
 			dict["scale"   ] = new List<float>(){scaleVec3.x,scaleVec3.y,scaleVec3.z};
 
 			return dict;

@@ -30,8 +30,20 @@ namespace Lozi
 
 			if(meshObject.blendShapeCount>0)
 			{
-				Mesh mesh  = new Mesh();
-				
+				Mesh mesh  	  = new Mesh();
+
+				for(int num=0; num<meshObject.blendShapeCount; num++)
+				{
+					renderer.SetBlendShapeWeight(num,0);
+				}
+
+				Transform parent = renderer.transform.parent;
+				Vector3 scale    = renderer.transform.localScale;
+				Bounds bounds 	 = meshObject.bounds;
+
+				renderer.transform.parent = null;
+				meshObject.RecalculateBounds();
+
 				for(int num=0; num<meshObject.blendShapeCount; num++)
 				{
 					MorphObject obj = new MorphObject();
@@ -41,17 +53,22 @@ namespace Lozi
 
 					renderer.SetBlendShapeWeight(num,100);
 					renderer.BakeMesh(mesh);
-					
+
 					foreach(Vector3 vertice in mesh.vertices)
 					{
-						obj.vertices.Add(vertice.x);
-						obj.vertices.Add(vertice.y);
-						obj.vertices.Add(vertice.z);
+						obj.vertices.Add(-(vertice.x) / renderer.transform.localScale.x);
+						obj.vertices.Add(  vertice.y  / renderer.transform.localScale.y);
+						obj.vertices.Add(  vertice.z  / renderer.transform.localScale.z);
 					}
 
 					morphList.Add(obj);
 					renderer.SetBlendShapeWeight(num,0);
 				}
+
+				renderer.transform.parent = parent;
+				renderer.transform.localScale = scale;
+				meshObject.RecalculateBounds();
+
 				mesh.Clear();
 				mesh = null;
 			}

@@ -21,6 +21,7 @@ namespace Lozi
 		private List<float>            weights;
 		private List<BoneWeight> sortedWeights;
 		private Vector3		  	   rootBoneRot;
+
 		public LoziMeshSkin(SkinnedMeshRenderer meshRenderer):base()
 		{
 			setTarget(meshRenderer.transform);
@@ -115,6 +116,36 @@ namespace Lozi
 			return false;
 		}
 
+		public void generateScriptProperties()
+		{
+			for(int num = 0; num < sortedObjects.Count; num++)
+			{
+				sortedObjects[num].generateScriptProperties();
+			}
+		}
+		
+		public bool exportColliders
+		{
+			set
+			{
+				for(int num = 0; num < sortedObjects.Count; num++)
+				{
+					sortedObjects[num].includeColliders = value;
+				}
+			}
+		}
+		
+		public bool exportScriptProperties
+		{
+			set
+			{
+				for(int num = 0; num < sortedObjects.Count; num++)
+				{
+					sortedObjects[num].includeScripts = value;
+				}
+			}
+		}
+
 		public int getBoneIndex(LoziBone bone)
 		{
 			for(int num = 0; num < sortedObjects.Count; num++)
@@ -169,6 +200,11 @@ namespace Lozi
 				}
 				return bonesArr;
 			}
+		}
+
+		public int rootBoneID
+		{
+			get{return rootObject.objectId;}
 		}
 		
 		public string id

@@ -14,12 +14,17 @@ namespace Lozi
 	[System.Serializable]
 	public class LoziBone : HierarchyObject
 	{
-		public string      name;
-		public int	       objectId;
-		public string      parentID;
-		public List<float> pos;
-		public List<float> rotq;
-		public List<float> scl;
+		public string      	 		 name;
+		public int	       	 		 objectId;
+		public string      	 		 parentID;
+		public List<float> 	 		 pos;
+		public List<float> 	 		 rotq;
+		public List<float> 	 		 scl;
+		public LoziCollider  		 collider;
+		public LoziScriptProperties  props;
+		public LoziSoundSource       sound;
+		public bool          		 includeColliders;
+		public bool          		 includeScripts;
 
 		public LoziBone():base()
 		{
@@ -31,15 +36,47 @@ namespace Lozi
 
 			if(target)
 			{
+				if(LoziCollider.hasCollider(obj.gameObject))
+				{
+					collider = new LoziCollider(obj.gameObject);
+				}
+				if(LoziScriptProperties.hasScript(obj.gameObject))
+				{
+					props = new LoziScriptProperties(obj.gameObject);
+				}
+				if(LoziSoundSource.hasSound(obj.gameObject))
+				{
+					if(LoziSoundSource.hasClip(obj.gameObject))
+					{
+						sound = new LoziSoundSource(obj.gameObject);
+					}
+				}
 				name     = obj.name;
 				objectId = obj.GetInstanceID();
 
-				pos      = new List<float>(){obj.localPosition.x, obj.localPosition.y, obj.localPosition.z};
-				rotq     = new List<float>(){obj.localRotation.x, obj.localRotation.y, obj.localRotation.z,obj.localRotation.w};
+				Vector3 posVec  = obj.localPosition;
+				Quaternion quat = obj.localRotation;
+				Vector3 scalVec = obj.localScale;
+
+				posVec = new Vector3(-posVec.x,posVec.y,posVec.z);
+				quat   = Quaternion.Euler(obj.localEulerAngles.x,obj.localEulerAngles.y,obj.localEulerAngles.z);
+				quat   = new Quaternion(-quat.x,quat.y,quat.z,-quat.w);
+				//quat = Quaternion.Inverse(quat);
+				//posVec = Vector3.Reflect(posVec,Vector3.forward);
+				pos      = new List<float>(){posVec.x, posVec.y, posVec.z};
+				rotq     = new List<float>(){quat.x, quat.y,  quat.z, quat.w};
 				scl      = new List<float>(){obj.localScale.x,	  obj.localScale.y,    obj.localScale.z};
 			}
 		}
-		
+
+		public void generateScriptProperties()
+		{
+			if(props!=null)
+			{
+				props.generate();
+			}
+		}
+
 		public bool isSame(Transform target)
 		{
 			if(target==obj)
@@ -54,12 +91,32 @@ namespace Lozi
 			get
 			{
 				Dictionary<string,object> dict = new Dictionary<string, object>();
-				dict["parent"] = parent;
-				dict["name"  ] = name;
-				dict["id"    ] = objectId;
-				dict["pos"   ] = pos;
-				dict["rotq"  ] = rotq;
-				dict["scl"   ] = scl;
+				dict["parent"  ] = parent;
+				dict["name"    ] = name;
+				dict["id"      ] = objectId;
+				dict["pos"     ] = pos;
+				dict["rotq"    ] = rotq;
+				dict["scl"     ] = scl;
+
+				if(sound!=null)
+				{
+					dict["sound"] = sound.sourceProperties;
+				}
+
+				if(includeScripts)
+				{
+					if(props!=null)
+					{
+						dict["scriptProperties"] = props.objectProperties;
+					}
+				}
+				if(includeColliders)
+				{
+					if(collider!=null && collider.hasColliderInfo)
+					{
+						dict["collider"] = collider.objectProperties;
+					}
+				}
 				
 				return dict;
 			}

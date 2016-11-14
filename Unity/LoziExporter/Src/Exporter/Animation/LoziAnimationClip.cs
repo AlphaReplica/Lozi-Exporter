@@ -21,6 +21,7 @@ namespace Lozi
 		private float 		   				 fps;
 		private float 						 length;
 		private List<LoziAnimationKeyPoints> keys;
+		private int                          id;
 
 		public LoziAnimationClip (AnimationClip clip, Transform target):base()
 		{
@@ -32,6 +33,7 @@ namespace Lozi
 			wrapMode = clip.wrapMode.ToString();
 			fps      = clip.frameRate;
 			length   = clip.length;
+			id       = clip.GetInstanceID();
 		}
 
 		// Generates AnimationClipCurveData array from clip
@@ -85,7 +87,7 @@ namespace Lozi
 							animated.isRoot  		 = (path.Contains("/")) ? false : true;
 							animated.path            = path;
 							animated.setObject(targetObj);
-							unsortedObjects.Add(animated);
+							unsortedObjects.Add(animated); 
 						}
 					}
 				}
@@ -212,7 +214,15 @@ namespace Lozi
 					float[] pos						  = getPointArrayByTime(keys[num1].pos,keys[num1].times[num2],3);
 					float[] rot						  = getPointArrayByTime(keys[num1].rot,keys[num1].times[num2],4);
 					float[] scl						  = getPointArrayByTime(keys[num1].scl,keys[num1].times[num2],3);
-					
+
+					if(pos!=null)
+					{
+						pos = new float[]{-pos[0],pos[1],pos[2]};
+					}
+					if(rot!=null)
+					{ 
+						rot = new float[]{-rot[0],rot[1],rot[2],-rot[3]};
+					}
 					keyDict["time"] = keys[num1].times[num2];
 					if(pos!=null){keyDict["pos"] = pos;}
 					if(rot!=null){keyDict["rot"] = rot;}
@@ -251,6 +261,7 @@ namespace Lozi
 			dict["length"	] = length;
 			dict["mode"     ] = wrapMode;
 			dict["hierarchy"] = keysDictionary(isSkinned);
+			dict["id"    	] = id;
 
 			if(!isSkinned)
 			{

@@ -21,6 +21,7 @@ namespace Lozi
 		public bool 		  isFoldedInUI;
 		public bool			recieveShadows;
 		public bool            castShadows;
+		public int              rootBoneID;
 		private Mesh       		   oldMesh;
 		private Mesh       			  mesh;
 		private LoziMeshGeometry  geometry;
@@ -57,8 +58,8 @@ namespace Lozi
 				objName = mesh.name;
 				if(type==MeshType.Static)
 				{
-					recieveShadows = obj.GetComponent<MeshRenderer>().receiveShadows;
-					castShadows	   = obj.GetComponent<MeshRenderer>().castShadows;
+					recieveShadows = obj.GetComponent<MeshRenderer>().receiveShadows; 
+					castShadows	   = (obj.GetComponent<MeshRenderer>().shadowCastingMode != UnityEngine.Rendering.ShadowCastingMode.Off);
 					geometry 	   = new LoziMeshGeometry(mesh,exportVertexColors,exportUvs);
 				}
 				if(type==MeshType.Skinned)
@@ -76,9 +77,13 @@ namespace Lozi
 						rootBone.transform.localPosition 	= rootBonePosition;
 						rootBone.transform.localEulerAngles = rootBoneEuler;
 						rootBone.transform.localScale    	= rootBoneScale;
+						
+						obj.transform.localPosition         = Vector3.zero;
+						obj.transform.localEulerAngles      = Vector3.zero;
+						obj.transform.localScale            = Vector3.one;
 
 						recieveShadows						= obj.GetComponent<SkinnedMeshRenderer>().receiveShadows;
-						castShadows							= obj.GetComponent<SkinnedMeshRenderer>().castShadows;
+						castShadows							= (obj.GetComponent<SkinnedMeshRenderer>().shadowCastingMode != UnityEngine.Rendering.ShadowCastingMode.Off);
 
 						mesh = new Mesh();
 						obj.GetComponent<SkinnedMeshRenderer>().BakeMesh(mesh);
@@ -86,11 +91,14 @@ namespace Lozi
 						geometry = new LoziMeshGeometry(mesh,exportVertexColors,exportUvs);
 						skin     = new LoziMeshSkin    (obj.GetComponent<SkinnedMeshRenderer>());
 						morph    = new LoziMeshMorpher (obj.GetComponent<SkinnedMeshRenderer>());
+						geometry.id = oldMesh.GetInstanceID();
 
 						rootBone.parent 					= rootBoneParent;
 						rootBone.transform.localPosition 	= rootBonePosition;
 						rootBone.transform.localEulerAngles = rootBoneEuler;
 						rootBone.transform.localScale    	= rootBoneScale;
+
+						rootBoneID = skin.rootBoneID;
 					}
 					else
 					{
@@ -119,6 +127,23 @@ namespace Lozi
 			}
 		}
 
+		public void resetBoneID()
+		{
+			if(skin!=null)
+			{
+				rootBoneID = skin.rootBoneID;
+			}
+		}
+
+		public void generateScriptProperties()
+		{
+			if(skin!=null)
+			{
+				skin.generateScriptProperties();
+			}
+		}
+
+
 		// returns mesh data in dictionary
 		public Dictionary<string,object> meshProperties
 		{
@@ -144,7 +169,7 @@ namespace Lozi
 					{
 						Dictionary<string,object> skinDict  = new Dictionary<string, object>();
 
-						skinDict["bones"      ] = skin.bonesDictionary;
+						skinDict["bones"      ] = rootBoneID; //skin.bonesDictionary;
 						skinDict["skinIndices"] = skin.skinIndices;
 						skinDict["skinWeights"] = skin.skinWeights;
 
@@ -163,6 +188,49 @@ namespace Lozi
 				else
 				{
 					return null;
+				}
+			}
+		}
+
+		public Dictionary<string,object> boneProperties
+		{
+			get
+			{
+				if(skin!=null)
+				{
+					Dictionary<string,object> dict  = new Dictionary<string, object>();
+					dict["id"      ] = skin.rootBoneID;
+					dict["bones"   ] = skin.bonesDictionary;
+
+					return dict;
+				}
+				return null;
+			}
+		}
+
+		public int defaultRootBoneID
+		{
+			get{return skin.rootBoneID;}
+		}
+		
+		public bool exportColliders
+		{
+			set
+			{
+				if(skin!=null)
+				{
+					skin.exportColliders = value;
+				}
+			}
+		}
+		
+		public bool exportScriptProperties
+		{
+			set
+			{
+				if(skin!=null)
+				{
+					skin.exportScriptProperties = value;
 				}
 			}
 		}

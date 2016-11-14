@@ -17,6 +17,7 @@ namespace Lozi
 	{
 		public  bool 		  isFoldedInUI;
 		public  bool          includeInData = true;
+		public  bool          reverse;
 		private bool          islightMap;
 		private int	          objectId;
 		private Texture  	  obj;
@@ -38,6 +39,11 @@ namespace Lozi
 			pathToExport = path+"/";
 			string[] arr = path.Split('/');
 			directory    = arr[arr.Length-1];
+			
+			if(directory.Length>=2)
+			{
+				directory    = arr[arr.Length-2]+"/"+arr[arr.Length-1];
+			}
 
 			clear();
 			textureData = new List<string>();
@@ -58,12 +64,41 @@ namespace Lozi
 				AssetDatabase.Refresh();
 			}
 		}
-
-		private Texture2D createTexture(int width, int height, Color[] pixels)
+		
+		private Texture2D createTexture(int width, int height, Color[] pixels, bool isNormal = false)
 		{
 			Texture2D tex = new Texture2D(width,height);
+
 			tex.SetPixels(pixels);
 
+
+			if(isNormal)
+			{
+				for (int y=0; y < tex.height; y++)
+				{
+					for (int x=0; x < tex.width; x++)
+					{
+						
+						float xLeft  = tex.GetPixel(x-1,y).grayscale;
+						float xRight = tex.GetPixel(x+1,y).grayscale;
+						float yUp    = tex.GetPixel(x,y-1).grayscale;
+						float yDown  = tex.GetPixel(x,y+1).grayscale;
+						float xDelta = ((xLeft-xRight)+1)*0.5f;
+						float yDelta = ((yUp-yDown)+1)*0.5f;
+						
+						tex.SetPixel(x,y,new Color(xDelta,yDelta,1.0f,1.0f));
+					}
+				}
+			}
+
+			return tex;
+		}
+		
+		private Texture2D createTexture(int width, int height, Color32[] pixels)
+		{
+			Texture2D tex = new Texture2D(width,height);
+			tex.SetPixels32(pixels);
+			
 			return tex;
 		}
 
@@ -86,20 +121,101 @@ namespace Lozi
 			binary.Write(bytes);
 		}
 
+		private bool makeTexturesReadable(Texture texture)
+		{
+			string 			assetPath = AssetDatabase.GetAssetPath(texture);
+			TextureImporter importer  = AssetImporter.GetAtPath(assetPath) as TextureImporter;
+
+			if (importer!=null)
+			{
+				if(!importer.isReadable)
+				{
+					importer.textureType = TextureImporterType.Advanced;
+					importer.isReadable  = true;
+					
+					AssetDatabase.ImportAsset(assetPath);
+					AssetDatabase.Refresh();
+				}
+
+				return importer.normalmap;
+			}
+			return false;
+		}
+
+		private Texture2D getProceduralTexture(ProceduralTexture texture)
+		{
+			string 			  assetPath = AssetDatabase.GetAssetPath(texture);
+			SubstanceImporter importer  = AssetImporter.GetAtPath(assetPath) as SubstanceImporter;
+
+			if (importer!=null)
+			{
+				ProceduralMaterial[] materials = importer.GetMaterials();
+
+				for(int num1 = 0; num1 < materials.Length; num1++)
+				{
+					ProceduralMaterial material = materials[num1];
+
+					int width  = 0;
+					int height = 0;
+					int format = 0;
+					int load   = 0;
+					
+					importer.GetPlatformTextureSettings(material.name,"", out width,out height,out format, out load);
+
+					importer.SetPlatformTextureSettings(material,"",width,height,1,3);
+					importer.SetGenerateAllOutputs(material,true);
+					importer.SaveAndReimport();
+					material.RebuildTextures();
+
+					material.isReadable = true;
+				}
+
+				Texture2D tex = createTexture(texture.width,
+				                              texture.height,
+				                              texture.GetPixels32(0,0,texture.width,texture.height));
+				
+				tex.name = texture.name;
+
+				return tex;
+			}
+			return null;
+		}
+
 		private void setTextureData()
 		{
+			bool isNormal = makeTexturesReadable(obj);
+
 			if(obj is Cubemap)
 			{
 				Cubemap cubemap = obj as Cubemap;
 
 				try
 				{
-					textureData.Add(imageData(createTexture(obj.width,obj.height,cubemap.GetPixels(CubemapFace.PositiveX)),obj.name+"_right"));
-					textureData.Add(imageData(createTexture(obj.width,obj.height,cubemap.GetPixels(CubemapFace.NegativeX)),obj.name+"_left"));
-					textureData.Add(imageData(createTexture(obj.width,obj.height,cubemap.GetPixels(CubemapFace.NegativeY)),obj.name+"_down"));
-					textureData.Add(imageData(createTexture(obj.width,obj.height,cubemap.GetPixels(CubemapFace.PositiveY)),obj.name+"_up"));
-					textureData.Add(imageData(createTexture(obj.width,obj.height,cubemap.GetPixels(CubemapFace.PositiveZ)),obj.name+"_forward"));
-					textureData.Add(imageData(createTexture(obj.width,obj.height,cubemap.GetPixels(CubemapFace.NegativeZ)),obj.name+"_back"));
+					Color[] right = cubemap.GetPixels(CubemapFace.PositiveX);
+					Color[] left  = cubemap.GetPixels(CubemapFace.NegativeX);
+					Color[] down  = cubemap.GetPixels(CubemapFace.NegativeY);
+					Color[] up    = cubemap.GetPixels(CubemapFace.PositiveY);
+					Color[] front = cubemap.GetPixels(CubemapFace.PositiveZ);
+					Color[] back  = cubemap.GetPixels(CubemapFace.NegativeZ);
+
+					if(!reverse)
+					{
+						Array.Reverse(right);
+						Array.Reverse(left );
+						Array.Reverse(front);
+						Array.Reverse(back );
+
+						Color[] temp = up;
+						up   = down;
+						down = temp;
+					}
+
+					textureData.Add(imageData(createTexture(obj.width,obj.height,right),obj.name+"_right"  ));
+					textureData.Add(imageData(createTexture(obj.width,obj.height,left ),obj.name+"_left"   ));
+					textureData.Add(imageData(createTexture(obj.width,obj.height,down ),obj.name+"_down"   ));
+					textureData.Add(imageData(createTexture(obj.width,obj.height,up   ),obj.name+"_up"     ));
+					textureData.Add(imageData(createTexture(obj.width,obj.height,front),obj.name+"_forward"));
+					textureData.Add(imageData(createTexture(obj.width,obj.height,back ),obj.name+"_back"   ));
 				}
 				catch(Exception e)
 				{
@@ -111,12 +227,20 @@ namespace Lozi
 			{
 				try
 				{
-					textureData.Add(imageData(createTexture(obj.width,obj.height,(obj as Texture2D).GetPixels()),obj.name));
+					textureData.Add(imageData(createTexture(obj.width,obj.height,(obj as Texture2D).GetPixels(),isNormal),obj.name));
 				}
 				catch(Exception e)
 				{
 
 					Debug.LogError("IS "+AssetDatabase.GetAssetPath(obj)+" Sprite? "+e.Message);
+				}
+			}
+			if(obj is ProceduralTexture)
+			{
+				Texture2D tex = getProceduralTexture(obj as ProceduralTexture);
+				if(tex!=null)
+				{
+					textureData.Add(imageData(tex,tex.name));
 				}
 			}
 		}

@@ -35,6 +35,18 @@ namespace Lozi.UI
 			}
 		}
 
+		private int getRootBoneIndex(int id, int[] bones)
+		{
+			for(int num = 0; num <bones.Length; num++)
+			{
+				if(bones[num] == id)
+				{
+					return num;
+				}
+			}
+			return -1;
+		}
+
 		// Draws Headers with fold/unfold button and title
 		private void drawHeader()
 		{
@@ -67,7 +79,7 @@ namespace Lozi.UI
 		
 		public bool drawMeshes()
 		{
-			GUI.skin.box.margin =  new RectOffset(10,10,0,0);
+			GUI.skin.box.margin =  new RectOffset(3,2,0,0);
 			
 			if(LoziExporter.instance.meshCollection!=null &&
 			   LoziExporter.instance.meshCollection.meshes.Count>0)
@@ -106,6 +118,23 @@ namespace Lozi.UI
 						GUILayout.Label ("Export Uvs");
 						tempMesh.exportUvs[0] = EditorGUILayout.Toggle("UV1", tempMesh.exportUvs[0]);
 						tempMesh.exportUvs[1] = EditorGUILayout.Toggle("UV2", tempMesh.exportUvs[1]);
+
+						if(tempMesh.meshType == LoziMesh.MeshType.Skinned)
+						{
+							GUILayout.Space(10);
+							int[] bones         = LoziExporter.instance.meshCollection.rootBoneIDArray<int>();
+							int   boneIndex 	= getRootBoneIndex(tempMesh.rootBoneID,bones);
+
+							boneIndex 			= EditorGUILayout.Popup("Root Bone ID",boneIndex,LoziExporter.instance.meshCollection.rootBoneIDArray<string>());
+
+							tempMesh.rootBoneID = bones[boneIndex];
+
+							if(GUILayout.Button("Reset Root Bone ID"))
+							{
+								tempMesh.resetBoneID();
+							}
+						}
+						GUILayout.Space(10);
 						EditorGUILayout.EndVertical();
 						EditorGUILayout.EndVertical();
 					}

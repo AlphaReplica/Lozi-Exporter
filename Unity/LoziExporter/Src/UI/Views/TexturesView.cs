@@ -68,7 +68,7 @@ namespace Lozi.UI
 
 		public bool drawTextures()
 		{
-			GUI.skin.box.margin =  new RectOffset(10,10,0,0);
+			GUI.skin.box.margin =  new RectOffset(3,2,0,0);
 			if(LoziExporter.instance.textureCollection!=null &&
 			   LoziExporter.instance.textureCollection.textures.Count>0)
 			{
@@ -110,12 +110,22 @@ namespace Lozi.UI
 						{
 							GUILayout.Label ("TYPE: Cubemap");
 						}
-						else
+						if(tempTex.texture is ProceduralTexture)
+						{
+							GUILayout.Label ("TYPE: Procedural Texture");
+						}
+						if(tempTex.texture is Texture2D)
 						{
 							GUILayout.Label ("TYPE: Texture");
 						}
 						GUILayout.Label ("RESOLUTION: "+tempTex.texture.width.ToString()+"X"+tempTex.texture.height.ToString());
 						GUILayout.Label ("ID: "+tempTex.id.ToString());
+
+						if(tempTex.texture is Cubemap)
+						{
+							tempTex.reverse = GUILayout.Toggle(tempTex.reverse,"Reverse Cubemap");
+						}
+
 						EditorGUILayout.EndVertical();
 						EditorGUILayout.EndHorizontal();
 						EditorGUILayout.EndVertical();

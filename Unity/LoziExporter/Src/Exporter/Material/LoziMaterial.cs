@@ -16,29 +16,43 @@ namespace Lozi
 	public class LoziMaterial : IDisposable
 	{
 		public  bool 		  			 isFoldedInUI;
+		public  int                      materialSide;
 		public  int           			 materialType;
 		public  int     		   		transparentID;
+		public  Material		 			 material;
 		private int	        	 			 objectId;
 		private int	        			   lightmapId;
-		private Material		 			 material;
 		private GameObject  		   			  obj;
 		private string			   			  objName;
 		public  string[] 			textureProperties;
 		private List<LoziMaterialProperty> properties;
-
+		
 		public LoziMaterial(GameObject target,int lightMapID)
 		{
 			transparentID	   = 0;
 			textureProperties  = new string[]{"None"};
 			lightmapId 		   = lightMapID;
 			obj 	   		   = target;
-			generate();
+			generate(null);
+		}
+		
+		public LoziMaterial(GameObject target,Material mat, int lightMapID)
+		{
+			transparentID	   = 0;
+			textureProperties  = new string[]{"None"};
+			lightmapId 		   = lightMapID;
+			obj 	   		   = target;
+			generate(mat);
 		}
 
 		// Generates data from unity material
-		public void generate()
+		public void generate(Material mat)
 		{
-			material = LoziMaterial.getMaterial(obj);
+			material = mat;
+			if(material==null)
+			{
+				material = LoziMaterial.getMaterial(obj);
+			}
 			objName  = material.name;
 			objectId = material.GetInstanceID();
 			getProperties();
@@ -151,6 +165,7 @@ namespace Lozi
 					materialDict["id"        ] = objectId;
 					materialDict["name"      ] = material.name;
 					materialDict["type"      ] = materialType;
+					materialDict["side"      ] = materialSide;
 					materialDict["properties"] = propertiesList;
 
 					return materialDict;
@@ -169,7 +184,15 @@ namespace Lozi
 				return objectId;
 			}
 		}
-		
+
+		public GameObject materialObject
+		{
+			get
+			{
+				return obj;
+			}
+		}
+
 		public string name
 		{
 			get
@@ -214,6 +237,21 @@ namespace Lozi
 			   gameObj.GetComponent<Renderer>().sharedMaterial!=null)
 			{
 				return gameObj.GetComponent<Renderer>().sharedMaterial;
+			}
+			return null;
+		}
+		
+		public static Material[] getMaterials(GameObject gameObj)
+		{
+			if(gameObj.GetComponent<SkinnedMeshRenderer>()!=null && 
+			   gameObj.GetComponent<SkinnedMeshRenderer>().sharedMaterials!=null)
+			{
+				return gameObj.GetComponent<SkinnedMeshRenderer>().sharedMaterials;
+			}
+			if(gameObj.GetComponent<Renderer>()!=null && 
+			   gameObj.GetComponent<Renderer>().sharedMaterials!=null)
+			{
+				return gameObj.GetComponent<Renderer>().sharedMaterials;
 			}
 			return null;
 		}

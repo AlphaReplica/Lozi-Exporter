@@ -37,7 +37,8 @@ namespace Lozi
 			get
 			{
 				Dictionary<string,object> dict = new Dictionary<string, object>();
-				
+
+				dict["cameraID" ] = cameraObj.GetInstanceID();
 				dict["fov"	    ] = cameraObj.fieldOfView;
 				dict["aspect"   ] = cameraObj.aspect;
 				dict["near"     ] = cameraObj.nearClipPlane;

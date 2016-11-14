@@ -19,7 +19,7 @@ namespace Lozi.UI
 		public Texture2D[] icons;
 		public LoziExporterUIResources()
 		{
-			icons     = new Texture2D[12];
+			icons     = new Texture2D[13];
 			icons[ 0] = loadTexture("lozi-icon-scene");
 			icons[ 1] = loadTexture("lozi-icon-object");
 			icons[ 2] = loadTexture("lozi-icon-camera");
@@ -33,6 +33,7 @@ namespace Lozi.UI
 			icons[ 9] = loadTexture("lozi-icon-texture");
 			icons[10] = loadTexture("lozi-icon-cubemap");
 			icons[11] = loadTexture("lozi-icon-skinAnimated");
+			icons[12] = loadTexture("lozi-icon-sound");
 		}
 
 		private Texture2D loadTexture(string name)

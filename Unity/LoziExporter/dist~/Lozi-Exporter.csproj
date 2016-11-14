@@ -64,6 +64,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="..\Src\Exporter\LoziExporter.cs">
+      <Link>Src\Exporter\LoziExporter.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\MiniJSON.cs">
+      <Link>Src\Exporter\MiniJSON.cs</Link>
+    </Compile>
     <Compile Include="..\Src\Exporter\Animation\LoziAnimation.cs">
       <Link>Src\Exporter\Animation\LoziAnimation.cs</Link>
     </Compile>
@@ -85,8 +91,14 @@
     <Compile Include="..\Src\Exporter\Collections\LoziMeshCollection.cs">
       <Link>Src\Exporter\Collections\LoziMeshCollection.cs</Link>
     </Compile>
+    <Compile Include="..\Src\Exporter\Collections\LoziSoundCollection.cs">
+      <Link>Src\Exporter\Collections\LoziSoundCollection.cs</Link>
+    </Compile>
     <Compile Include="..\Src\Exporter\Collections\LoziTextureCollection.cs">
       <Link>Src\Exporter\Collections\LoziTextureCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Colliders\LoziCollider.cs">
+      <Link>Src\Exporter\Colliders\LoziCollider.cs</Link>
     </Compile>
     <Compile Include="..\Src\Exporter\Helpers\Animation\LoziAnimationKeyPoint.cs">
       <Link>Src\Exporter\Helpers\Animation\LoziAnimationKeyPoint.cs</Link>
@@ -127,11 +139,23 @@
     <Compile Include="..\Src\Exporter\Object\LoziObject.cs">
       <Link>Src\Exporter\Object\LoziObject.cs</Link>
     </Compile>
+    <Compile Include="..\Src\Exporter\ScriptProperties\LoziScriptProperties.cs">
+      <Link>Src\Exporter\ScriptProperties\LoziScriptProperties.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Sounds\LoziSound.cs">
+      <Link>Src\Exporter\Sounds\LoziSound.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\Exporter\Sounds\LoziSoundSource.cs">
+      <Link>Src\Exporter\Sounds\LoziSoundSource.cs</Link>
+    </Compile>
     <Compile Include="..\Src\Exporter\Texture\LoziTexture.cs">
       <Link>Src\Exporter\Texture\LoziTexture.cs</Link>
     </Compile>
     <Compile Include="..\Src\UI\LoziExporterUI.cs">
       <Link>Src\UI\LoziExporterUI.cs</Link>
+    </Compile>
+    <Compile Include="..\Src\UI\LoziExporterUIResources.cs">
+      <Link>Src\UI\LoziExporterUIResources.cs</Link>
     </Compile>
     <Compile Include="..\Src\UI\Views\AnimationsView.cs">
       <Link>Src\UI\Views\AnimationsView.cs</Link>
@@ -145,23 +169,17 @@
     <Compile Include="..\Src\UI\Views\MeshesView.cs">
       <Link>Src\UI\Views\MeshesView.cs</Link>
     </Compile>
+    <Compile Include="..\Src\UI\Views\SoundsView.cs">
+      <Link>Src\UI\Views\SoundsView.cs</Link>
+    </Compile>
     <Compile Include="..\Src\UI\Views\TexturesView.cs">
       <Link>Src\UI\Views\TexturesView.cs</Link>
-    </Compile>
-    <Compile Include="..\Src\UI\LoziExporterUIResources.cs">
-      <Link>Src\UI\LoziExporterUIResources.cs</Link>
-    </Compile>
-    <Compile Include="..\Src\Exporter\LoziExporter.cs">
-      <Link>Src\Exporter\LoziExporter.cs</Link>
-    </Compile>
-    <Compile Include="..\Src\Exporter\MiniJSON.cs">
-      <Link>Src\Exporter\MiniJSON.cs</Link>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Folder Include="..\Src\" />
     <Folder Include="..\Src\UI\Resources\" />
+    <Folder Include="Src\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\Src\UI\Resources\lozi-icon-bone.png">
@@ -196,6 +214,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="..\Src\UI\Resources\lozi-icon-skinnedMesh.png">
       <Link>Src\UI\Resources\lozi-icon-skinnedMesh.png</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Src\UI\Resources\lozi-icon-sound.png">
+      <Link>Src\UI\Resources\lozi-icon-sound.png</Link>
     </EmbeddedResource>
     <EmbeddedResource Include="..\Src\UI\Resources\lozi-icon-texture.png">
       <Link>Src\UI\Resources\lozi-icon-texture.png</Link>

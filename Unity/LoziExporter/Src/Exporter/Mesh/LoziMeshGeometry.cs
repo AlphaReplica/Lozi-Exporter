@@ -20,7 +20,7 @@ namespace Lozi
 		private List<float>  meshVertices;
 		private List<float>   meshNormals;
 		private List<List<float>> meshUvs;
-		private List<int>	    meshFaces;
+		private List<List<int>>	meshFaces;
 
 		private bool   exportVertexColors;
 		private bool[] 			exportUvs;
@@ -46,7 +46,7 @@ namespace Lozi
 			meshVertices = new List<float>();
 			meshNormals  = new List<float>();
 			meshUvs		 = new List<List<float>>();
-			meshFaces    = new List<int>();
+			meshFaces    = new List<List<int>>();
 
 			parseVertices();
 			parseNormals();
@@ -59,7 +59,7 @@ namespace Lozi
 		{
 			foreach(Vector3 vertice in mesh.vertices)
 			{
-				meshVertices.Add(vertice.x);
+				meshVertices.Add(-vertice.x);
 				meshVertices.Add(vertice.y);
 				meshVertices.Add(vertice.z);
 			}
@@ -67,7 +67,9 @@ namespace Lozi
 
 		private void parseNormals()
 		{
-			foreach(Vector3 normal in mesh.normals)
+			Vector3[] normals = mesh.normals;
+
+			foreach(Vector3 normal in normals)
 			{
 				meshNormals.Add(normal.x);
 				meshNormals.Add(normal.y);
@@ -117,19 +119,23 @@ namespace Lozi
 
 		private void parseFaces()
 		{
-			for (int num=0;	num<mesh.triangles.Length; num++)
+			for(int num1 = 0; num1 < mesh.subMeshCount; num1++)
 			{
-				meshFaces.Add(mesh.triangles[num]+1); 
-			}
-		}
+				List<int> trianglesArr = new List<int>();
+				int[] triangles = mesh.GetTriangles(num1);
 
-		private void parseFaces2()
-		{
-			for (int num=0;	num<mesh.triangles.Length; num+=3)
-			{
-				meshFaces.Add(mesh.triangles[num  ]+1);
-				meshFaces.Add(mesh.triangles[num+1]+1);
-				meshFaces.Add(mesh.triangles[num+2]+1);
+				for(int num2 = 0; num2 < triangles.Length; num2+=3)
+				{
+					int temp = triangles[num2 + 0];
+					triangles[num2 + 0] = triangles[num2 + 1];
+					triangles[num2 + 1] = temp;
+				}
+
+				for(int num2 = 0; num2 < triangles.Length; num2++)
+				{
+					trianglesArr.Add(triangles[num2]+1);
+				}
+				meshFaces.Add(trianglesArr);
 			}
 		}
 
@@ -147,8 +153,8 @@ namespace Lozi
 		{
 			get{return meshUvs;}
 		}
-		
-		public List<int> faces
+
+		public List<List<int>> faces
 		{
 			get{return meshFaces;}
 		}
@@ -156,6 +162,7 @@ namespace Lozi
 		public int id
 		{
 			get{return objectId;}
+			set{objectId = value;}
 		}
 		
 		public string name

@@ -29,6 +29,7 @@ namespace Lozi.UI
 		private MaterialsView  			materials;
 		private TexturesView   			textures;
 		private AnimationsView			animations;
+		private SoundsView              sounds;
 
 		private LoziExporterUIResources resources;
 
@@ -36,8 +37,9 @@ namespace Lozi.UI
 		static void Init ()
 		{
 			LoziExporterUI window		    = LoziExporterUI.CreateInstance<LoziExporterUI>();
-			window.position 				= new Rect(Screen.width/2,Screen.height/2,500, (window.advanced) ? 650 : 140);
+			window.position 				= new Rect(Screen.width/2-200,Screen.height/2 - 100,500, (window.advanced) ? 650 : 140);
 			window.autoRepaintOnSceneChange = true;
+			window.minSize                  = new Vector3(500,130);
 			window.resize(); 
 			   
 			window.ShowUtility();
@@ -46,8 +48,8 @@ namespace Lozi.UI
 		// Constructor creates objects for other views and sets icons
 		public LoziExporterUI()
 		{
-			title 	   = "Lozi Exporter "+LoziExporter.Version;
-			skin	   = EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
+			titleContent = new GUIContent("Lozi Exporter "+LoziExporter.Version);
+			skin	   	 = EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
 
 			resources  = new LoziExporterUIResources();
 			hierarchy  = new HierarchyView(resources.icons);
@@ -55,11 +57,14 @@ namespace Lozi.UI
 			materials  = new MaterialsView(resources.icons);
 			textures   = new TexturesView(resources.icons);
 			animations = new AnimationsView(resources.icons);
+			sounds     = new SoundsView(resources.icons);
 		}
 
 		void resize()
 		{
-			this.position = new Rect(this.position.x,this.position.y,500, (advanced) ? 650 : 140);
+			Vector2 pos   = new Vector2(position.x,position.y);
+			this.minSize  = new Vector3(500,(advanced) ? 200 : 140); 
+			this.position = new Rect(pos.x,pos.y,500, (advanced) ? 650 : 140);
 		}
 
 
@@ -155,10 +160,14 @@ namespace Lozi.UI
 				
 				GUI.Box(EditorGUILayout.BeginVertical("Label"),GUIContent.none);
 				GUILayout.Space(5);
-				scroll = EditorGUILayout.BeginScrollView(scroll, GUILayout.Width(Screen.width - 15), GUILayout.Height (495));
+				scroll = EditorGUILayout.BeginScrollView(scroll, GUILayout.Width(position.width - 15), GUILayout.Height (position.height-160));
 				
 				if(target!=null)
 				{
+					if(sounds.drawSounds())
+					{
+						GUILayout.Space(10);
+					}
 					if(animations.drawAnimations())
 					{
 						GUILayout.Space(10);
@@ -191,7 +200,7 @@ namespace Lozi.UI
 			if(target!=null)
 			{
 				GUI.Box(EditorGUILayout.BeginHorizontal("Label"),GUIContent.none);
-				if(GUILayout.Button((LoziExporter.instance.pathToSave==null || LoziExporter.instance.pathToSave.Length==0) ? "Select path" : LoziExporter.instance.pathToSave,skin.textField))
+				if(GUILayout.Button((LoziExporter.instance.pathToSave==null || LoziExporter.instance.pathToSave.Length==0) ? "Select path" : LoziExporter.instance.pathToSave,skin.textField, GUILayout.MaxWidth(350)))
 				{
 					LoziExporter.instance.pathToSave = EditorUtility.SaveFilePanel("Save as Js","",target.name + ".lozi.js","js");
 				}

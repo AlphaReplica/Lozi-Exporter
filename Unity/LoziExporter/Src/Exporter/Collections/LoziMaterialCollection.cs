@@ -21,17 +21,23 @@ namespace Lozi
 
 			foreach(Transform transform in obj.GetComponentsInChildren<Transform>()) 
 			{
-				Material material = LoziMaterial.getMaterial(transform.gameObject);
-				if(material!=null && canAddInArray(material))
+				Material[] materials = LoziMaterial.getMaterials(transform.gameObject);
+				if(materials!=null && materials.Length>0)
 				{
-					int lightMapID  = -1;
-					LoziTexture tex = LoziExporter.instance.textureCollection.getLightMapByGameObject(transform.gameObject);
-
-					if(tex!=null)
+					for(int num = 0; num < materials.Length; num++)
 					{
-						lightMapID = tex.id;
+						if(canAddInArray(materials[num]))
+						{
+							int lightMapID  = -1;
+							LoziTexture tex = LoziExporter.instance.textureCollection.getLightMapByGameObject(transform.gameObject);
+							
+							if(tex!=null)
+							{
+								lightMapID = tex.id;
+							}
+							materialObjects.Add(new LoziMaterial(transform.gameObject,materials[num],lightMapID));
+						}
 					}
-					materialObjects.Add(new LoziMaterial(transform.gameObject,lightMapID));
 				}
 			}
 		}
@@ -40,7 +46,7 @@ namespace Lozi
 		{
 			foreach(LoziMaterial material in materialObjects) 
 			{
-				material.generate();
+				material.generate(material.material);
 			}
 		}
 
@@ -78,11 +84,11 @@ namespace Lozi
 		
 		public LoziMaterial getMaterialByMaterial(Material material)
 		{
-			foreach(LoziMaterial meshObj in materialObjects)
+			foreach(LoziMaterial matObj in materialObjects)
 			{
-				if(meshObj.isSameMaterial(material))
+				if(matObj.isSameMaterial(material))
 				{
-					return meshObj;
+					return matObj;
 				}
 			}
 			return null;
@@ -98,10 +104,40 @@ namespace Lozi
 			}
 			return 0;
 		}
-
+		
 		public LoziMaterial getMaterialByGameObject(GameObject obj)
 		{
 			return getMaterialByMaterial(LoziMaterial.getMaterial(obj));
+		}
+		
+		public List<LoziMaterial> getMaterialsByGameObject(GameObject obj)
+		{
+			Renderer rend = LoziMesh.getRenderer(obj);
+			
+			List<LoziMaterial> returnMaterials = new List<LoziMaterial>();
+			if(rend)
+			{
+				for(int num = 0; num < rend.sharedMaterials.Length; num++)
+				{
+					LoziMaterial mat = getMaterialByMaterial(rend.sharedMaterials[num]);
+
+					if(mat!=null)
+					{
+						returnMaterials.Add(mat);
+					}
+				}
+			}
+			return returnMaterials;
+		}
+		
+		public List<int> getMaterialIds(List<LoziMaterial> materials)
+		{
+			List<int> ids = new List<int>();
+			for(int num = 0; num < materials.Count; num++)
+			{
+				ids.Add(materials[num].id);
+			}
+			return ids;
 		}
 
 		public void Dispose()

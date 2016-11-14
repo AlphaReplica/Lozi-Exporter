@@ -57,12 +57,15 @@ namespace Lozi
 		
 		public bool isSameAnimation(Animation anim)
 		{
-			AnimationClip[] animClips = AnimationUtility.GetAnimationClips (anim.gameObject);
-			for(int num = 0; num < animClips.Length; num++)
+			if(anim!=null)
 			{
-				if(hasClip(animClips[num]))
+				AnimationClip[] animClips = AnimationUtility.GetAnimationClips (anim.gameObject);
+				for(int num = 0; num < animClips.Length; num++)
 				{
-					return true;
+					if(hasClip(animClips[num]))
+					{
+						return true;
+					}
 				}
 			}
 			return false;

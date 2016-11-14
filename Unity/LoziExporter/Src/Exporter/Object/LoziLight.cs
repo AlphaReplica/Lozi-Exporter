@@ -1,6 +1,11 @@
 ﻿/**
  * Created by Beka Mujirishvili (ifrit88@gmail.com)
  * 
+ * Collider Component
+ */
+/**
+ * Created by Beka Mujirishvili (ifrit88@gmail.com)
+ * 
  * Light object
  */
 
@@ -13,16 +18,16 @@ namespace Lozi
 	public class LoziLight
 	{
 		public bool isFoldedInUI;
-
+		
 		private GameObject		 obj;
 		private Light       lightObj;
-
+		
 		public LoziLight(GameObject target)
 		{
 			this.obj = target;
 			lightObj = this.obj.GetComponent<Light>();
 		}
-
+		
 		public LightType type
 		{
 			get
@@ -30,7 +35,7 @@ namespace Lozi
 				return lightObj.type;
 			}
 		}
-
+		
 		
 		private List<float> colorToList(Color col)
 		{
@@ -43,17 +48,18 @@ namespace Lozi
 			get
 			{
 				Dictionary<string,object> dict = new Dictionary<string, object>();
-				
+
+				dict["lightID"  ] = lightObj.GetInstanceID();
 				dict["color"	] = colorToList(lightObj.color);
 				dict["intensity"] = lightObj.intensity;
 				dict["angle"    ] = lightObj.spotAngle;
 				dict["range"    ] = lightObj.range;
 				dict["shadow"	] = (lightObj.shadows==LightShadows.None) ? false : true;
-
+				
 				return dict;
 			}
 		}
-
+		
 		public static bool hasLight(GameObject obj)
 		{
 			if(obj.GetComponent<Light>()!=null)

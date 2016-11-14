@@ -23,17 +23,20 @@ namespace Lozi
 
 			foreach(Transform transform in obj.GetComponentsInChildren<Transform>()) 
 			{
-				Material material = LoziMaterial.getMaterial(transform.gameObject);
+				Material[] materials = LoziMaterial.getMaterials(transform.gameObject);
 
-				if(material!=null)
+				if(materials!=null && materials.Length>0)
 				{
-					List<Texture> texturesArr = getMaterialTexures(material);
-
-					for(int num = 0; num < texturesArr.Count; num++)
+					for(int num1 = 0; num1 < materials.Length; num1++)
 					{
-						if(texturesArr[num]!=null && canAddInArray(texturesArr[num]))
+						List<Texture> texturesArr = getMaterialTexures(materials[num1]);
+						
+						for(int num2 = 0; num2 < texturesArr.Count; num2++)
 						{
-							textureCollection.Add(new LoziTexture(texturesArr[num],false));
+							if(texturesArr[num2]!=null && canAddInArray(texturesArr[num2]))
+							{
+								textureCollection.Add(new LoziTexture(texturesArr[num2],false));
+							}
 						}
 					}
 				}
