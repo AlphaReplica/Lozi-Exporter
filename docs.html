@@ -37,22 +37,197 @@
         <h1>Documentation</h1>
     </div>
 	<div class="container">
-	<ul class="list-group">
+    <div class="row">
+        <div class="col-md-12">
+            <p>Exported object will look like this after data parsed</p>
+            <img src="images/data.png" />
+			<br>
+			<br>
+			<div>
+			  <table class="table table-striped">
+					<tbody>
+					  <tr>
+						<td style="color:#2194CE; font-weight:bold;"; class="col-md-1">createObject(id:Int):LoziObject</td>
+						<td class="col-md-10">Creates loziObject by passed id, if hierarchy doesn't contains object with given id it will create object from data.objects first element, by default id is undefined</td>
+					  </tr>
+					  <tr>
+						<td style="color:#2194CE; font-weight:bold;"; class="col-md-1">dispose():Void</td>
+						<td class="col-md-10">Disposes loaded object</td>
+					  </tr>
+					  <tr>
+						<td style="color:#2194CE; font-weight:bold;"; class="col-md-1">assets:Object</td>
+						<td class="col-md-10">Contains everything parsed from json</td>
+					  </tr>
+					  <tr>
+						<td style="color:#2194CE; font-weight:bold;"; class="col-md-1">generatedAssets:Object</td>
+						<td class="col-md-10">Contains generated assets including materials and geometries, every instance of mesh uses generated materials and geometries from generatedAssets object, in other words, every geometry, material or texture is initialized once when loaded</td>
+					  </tr>
+					  <tr>
+						<td style="color:#2194CE; font-weight:bold;"; class="col-md-1">objects:Object</td>
+						<td class="col-md-10">Hierarchy representation of objects in loaded data</td>
+					  </tr>
+					</tbody>
+			  </table>
+			</div>
+        </div>
+    </div>
+	<br>
+	<ul class="list-group" style="-webkit-box-shadow:none; box-shadow:none;">
 	  <li class="list-group-item"><b>Lozi</b></li>
 	  <div class="col-md">
           <table class="table table-striped">
             <tbody>
               <tr>
-                <td style="color:#2194CE"; class="col-md-6">load(url:string, complete:function, onProgress:function ( ProgressObject ), error:function):void</td>
-                <td class="col-md-4">loads lozi json string data from url</td>
+                <td style="color:#2194CE;" class="col-md-6">load(url:String, complete:Function, onProgress:Function ( ProgressObject ), error:Function, generateObject:Boolean):Void</td>
+                <td class="col-md-4">loads lozi json string data from url, if generateObject is false loaded data will be parsed but object will not be created, default is true</td>
               </tr>
               <tr>
-                <td style="color:#2194CE"; class="col-md-6">loadFromString(string:string, complete:function, onProgress:function ( ProgressObject ), error:function):void</td>
-                <td class="col-md-4">loads lozi json string</td>
+                <td style="color:#2194CE;" class="col-md-6">loadFromString(string:String, complete:Function, onProgress:Function ( ProgressObject ), error:Function, generateObject:Boolean):Void</td>
+                <td class="col-md-4">loads lozi json string, if generateObject is false data will be parsed but object will not be created, default is true</td>
               </tr>
               <tr>
-                <td style="color:#2194CE"; class="col-md-6">loadFromData(string:string, complete:function, onProgress:function ( ProgressObject ), error:function):void</td>
-                <td class="col-md-4">loads lozi json data</td>
+                <td style="color:#2194CE;" class="col-md-6">loadFromData(string:String, complete:Function, onProgress:Function ( ProgressObject ), generateObject:Boolean):Void</td>
+                <td class="col-md-4">generates lozi parsed data, if generateObject is false data will be generated but object will not be created, default is true</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE;" class="col-md-6">loadFromGeneratedData(data:Object):Void</td>
+                <td class="col-md-4">generates loziObject from parsed and generated data</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE;" class="col-md-6">disposeData(data:Object):Void</td>
+                <td class="col-md-4">iteratively clears every property in data</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE;" class="col-md-6">version():Float</td>
+                <td class="col-md-4">returns library version</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE;" class="col-md-6">Math</td>
+                <td class="col-md-4">Math helper functions</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE;" class="col-md-6">Utils</td>
+                <td class="col-md-4">Helper functions</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE;" class="col-md-6">Libraries</td>
+                <td class="col-md-4">Object for webgl library functions</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE;" class="col-md-6">Static</td>
+                <td class="col-md-4">functions for parsing and creating loziObject</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+		
+		<li class="list-group-item"><b>Lozi.Math</b></li>
+	    <div class="col-md">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">radians(degree:Float):Float</td>
+                <td class="col-md-4">converts degrees to radians</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">degrees(degree:Float):Float</td>
+                <td class="col-md-4">converts radians to degrees</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+		
+		<li class="list-group-item"><b>Lozi.Utils</b></li>
+	    <div class="col-md">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">eulerAngles(object:Object,x:Float,y:Float,z:Float):Vector3</td>
+                <td class="col-md-4">Sets and returns object's euler angles in degrees</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">getMousePosition(event:Event,element:DomElement):Vector2</td>
+                <td class="col-md-4">Returns correct mouse position on canvas element</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">getObjectByProperty(objects:Array,prop:String,val:Object):Object</td>
+                <td class="col-md-4">Searches object in given array by property and value</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">getPropertyArray(arr:Array,property:String,remove:Boolean):Array</td>
+                <td class="col-md-4">searches properties in array items and returns array with found properties, if remove is true, than old object with property will be cleared, default is false</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">clearArray(arr:Array,func:Function,clearLevel:Int,exclude:Array):Void</td>
+                <td class="col-md-4">clears given array, function iterates thru items and if item is object iteratively clears object and its children <br><br>func:function for custom logic before object item cleared<br><br>clearlevel:how deep clear process must go, for example clearlevel = 0, only current array will be cleared, clearlevel = 1 will clear array and items children, clearlevel = 2 will clear array and items children's items, etc... <br></br>exclude: will exclude properties in items</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">clearObject(obj:Object,func:Function,clearLevel:Int,exclude:Array):Void</td>
+                <td class="col-md-4">clears given object, function iterates thru object's properties and clears object and its children <br><br>func:function for custom logic before object cleared<br><br>clearlevel:how deep clear process must go, for example clearlevel = 0, only current object will be cleared, clearlevel = 1 will clear objects and it's property objects, clearlevel = 2 will clear object's property objects and property object's property objects (inception), etc... <br></br>exclude: will exclude properties in object</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+		
+		<li class="list-group-item"><b>Lozi.Libraries</b></li>
+	    <div class="col-md">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">object():Object</td>
+                <td class="col-md-4">Returns included webGL library, if nothing is found throws error</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">Three:Object</td>
+                <td class="col-md-4">Object for handling three.js library, creating geometry, material, textures, etc...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+		
+		<li class="list-group-item"><b>Lozi.Static</b></li>
+	    <div class="col-md">
+          <table class="table table-striped">
+            <tbody>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">Geometry:Object</td>
+                <td class="col-md-4">Object for handling geometry</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">Material:Object</td>
+                <td class="col-md-4">Object for handling material</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">Texture:Object</td>
+                <td class="col-md-4">Object for handling texture</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">Sound:Object</td>
+                <td class="col-md-4">Object for handling sound</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">Animation:Object</td>
+                <td class="col-md-4">Object for handling animation</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">Light:Object</td>
+                <td class="col-md-4">Object for handling light</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">Camera:Object</td>
+                <td class="col-md-4">Object for handling camera</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">ScriptProperties:Object</td>
+                <td class="col-md-4">Object for handling script properties</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">Colliders:Object</td>
+                <td class="col-md-4">Object for handling colliders</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">Object:Object</td>
+                <td class="col-md-4">Object for handling generating object</td>
               </tr>
             </tbody>
           </table>
@@ -63,16 +238,16 @@
           <table class="table table-striped">
             <tbody>
               <tr>
-                <td style="color:#2194CE"; class="col-md-6">totalProgress:int</td>
-                <td class="col-md-4">total loaded progress</td>
+                <td style="color:#2194CE"; class="col-md-6">totalProgress:Float</td>
+                <td class="col-md-4">total loaded progress, from 0 to 1</td>
               </tr>
               <tr>
-                <td style="color:#2194CE"; class="col-md-6">dataProgress:int</td>
-                <td class="col-md-4">loaded data progress</td>
+                <td style="color:#2194CE"; class="col-md-6">dataProgress:Float</td>
+                <td class="col-md-4">loaded data progress, from 0 to 1</td>
               </tr>
               <tr>
-                <td style="color:#2194CE"; class="col-md-6">textureProgress:int</td>
-                <td class="col-md-4">loaded textures progress</td>
+                <td style="color:#2194CE"; class="col-md-6">assetsProgress:Float</td>
+                <td class="col-md-4">loaded textures progress, from 0 to 1</td>
               </tr>
             </tbody>
           </table>
@@ -84,94 +259,161 @@
             <tbody>
               <tr>
                 <td style="color:#2194CE"; class="col-md-6">data:Object</td>
-                <td class="col-md-4">parsed and generated Json object</td>
+                <td class="col-md-4">parsed and generated object</td>
               </tr>
               <tr>
                 <td style="color:#2194CE"; class="col-md-6">object:LoziObject</td>
-                <td class="col-md-4">generated loziObject of type</td>
+                <td class="col-md-4">generated loziObject</td>
               </tr>
             </tbody>
           </table>
         </div>
 		
-		<li class="list-group-item"><b>Lozi.Math</b></li>
-	    <div class="col-md">
-          <table class="table table-striped">
-            <tbody>
-              <tr>
-                <td style="color:#2194CE"; class="col-md-6">radians(degree:float):float</td>
-                <td class="col-md-4">converts degrees to radians</td>
-              </tr>
-              <tr>
-                <td style="color:#2194CE"; class="col-md-6">degrees(degree:float):float</td>
-                <td class="col-md-4">converts radians to degrees</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+		
 		<li class="list-group-item"><b>LoziObject</b></li>
 	    <div class="col-md">
           <table class="table table-striped">
             <tbody>
-              <tr>
-                <td style="color:#2194CE"; class="col-md-6">setActiveCamera(index:int):void</td>
-                <td class="col-md-4">sets active camera by index</td>
-              </tr>
-              <tr>
-                <td style="color:#2194CE"; class="col-md-6">activeCamera():Camera</td>
-                <td class="col-md-4">gets active camera, by default camera with index 0 is returned</td>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">update(delta:Float):Void</td>
+                <td class="col-md-4">Updates object's animations</td>
               </tr>
 			  <tr>
-                <td style="color:#2194CE"; class="col-md-6">flip(flipX:boolean, flipY:boolean,flipZ :boolean):void</td>
-                <td class="col-md-4">flips object by given axis, if one of those params equals true materials change face from front to back</td>
+                <td style="color:#2194CE"; class="col-md-6">clone():Object</td>
+                <td class="col-md-4">Clones object and returnes cloned</td>
               </tr>
 			  <tr>
-                <td style="color:#2194CE"; class="col-md-6">scale(scaleX:float, scaleY:float, scaleZ:float):void</td>
-                <td class="col-md-4">scales object, recommended to use this function instead of object.scale.x/y/z</td>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">delete(deleteData:Boolean):Void</td>
+                <td class="col-md-4">deletes object, if deleteData is true loaded and generated data will be disposed also, default is false</td>
               </tr>
 			  <tr>
-                <td style="color:#2194CE"; class="col-md-6">updateAnimations(delta:float):void</td>
-                <td class="col-md-4">updates all animations currently played by objects children</td>
-              </tr>
-			  <tr>
-                <td style="color:#2194CE"; class="col-md-6">euler(x:float, y:float, z:float):void</td>
+                <td style="color:#2194CE"; class="col-md-6">euler(x:Float, y:Float, z:Float):Void</td>
                 <td class="col-md-4">rotates object to degrees</td>
               </tr>
 			  <tr>
-                <td style="color:#2194CE"; class="col-md-6">objects():Array</td>
-                <td class="col-md-4">returns array of objects including self and children</td>
+                <td style="color:#2194CE"; class="col-md-6">setOnMouseMove(renderer:Renderer,callback:Function):Void</td>
+                <td class="col-md-4">Sets Mouse Move event, Renderer and callback should be passed</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">setOnMouseClick(renderer:Renderer,callback:Function):Void</td>
+                <td class="col-md-4">Sets Mouse Click event, Renderer and callback should be passed</td>
+              </tr>
+              <tr>
+                <td style="color:#2194CE"; class="col-md-6">activeCamera(index:Int):Camera</td>
+                <td class="col-md-4">Sets active camera, by default camera with index 0 is returned</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">objects(getAll:Boolean):Array</td>
+                <td class="col-md-4">Returns array of objects including self and children, if getAll is true bones will be included too, default is false</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">meshes():Array</td>
+                <td class="col-md-4">Returns array of object's meshes</td>
               </tr>
 			  <tr>
                 <td style="color:#2194CE"; class="col-md-6">geometries():Array</td>
-                <td class="col-md-4">returns array of generated geometries from loaded JSON data</td>
+                <td class="col-md-4">Returns array of generated geometries from loaded data</td>
               </tr>
 			  <tr>
                 <td style="color:#2194CE"; class="col-md-6">data():Object</td>
-                <td class="col-md-4">returns parsed and generated data from loaded JSON data</td>
+                <td class="col-md-4">Returns parsed and generated data from loaded data</td>
               </tr>
 			  <tr>
                 <td style="color:#2194CE"; class="col-md-6">images():Array</td>
-                <td class="col-md-4">returns array of loaded images</td>
+                <td class="col-md-4">Returns array of loaded images</td>
               </tr>
 			  <tr>
                 <td style="color:#2194CE"; class="col-md-6">textures():Array</td>
-                <td class="col-md-4">returns array of generated textures</td>
+                <td class="col-md-4">Returns array of generated textures</td>
               </tr>
 			  <tr>
                 <td style="color:#2194CE"; class="col-md-6">materials():Array</td>
-                <td class="col-md-4">returns array of generated materials</td>
+                <td class="col-md-4">Returns array of generated materials</td>
               </tr>
 			  <tr>
                 <td style="color:#2194CE"; class="col-md-6">lights():Array</td>
-                <td class="col-md-4">returns array of generated lights</td>
+                <td class="col-md-4">Returns array of object's lights</td>
               </tr>
 			  <tr>
                 <td style="color:#2194CE"; class="col-md-6">cameras():Array</td>
-                <td class="col-md-4">returns array of generated cameras</td>
+                <td class="col-md-4">Returns array of object's cameras</td>
               </tr>
 			  <tr>
                 <td style="color:#2194CE"; class="col-md-6">animations():Array</td>
-                <td class="col-md-4">returns array of animations of self and children</td>
+                <td class="col-md-4">Returns array of animations of self and children</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">colliders():Array</td>
+                <td class="col-md-4">Returns array of collider objects</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">properties():Array</td>
+                <td class="col-md-4">Returns array of objects with properties</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">soundSources():Array</td>
+                <td class="col-md-4">Returns array of sound sources in object</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">soundListeners():Array</td>
+                <td class="col-md-4">Returns array of sound listeners in object</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">blendShapes():Array</td>
+                <td class="col-md-4">Returns Blendshapes array</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">getProperty(objectIndex:Int, scriptname:String, field:String, returnType:Boolean):Object</td>
+                <td class="col-md-4">Returns field property from scriptname property object at given index of properties array, if returnType is true object with type string will be returned</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">getCollider(objectIndex:Int):Object</td>
+                <td class="col-md-4">Returns collider object at given index of colliders array</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">createSoundListener(obj:Object):Object</td>
+                <td class="col-md-4">Creates sound listener and adds to passed object</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">setSoundListenerVolume(index:Int,vol:Float):Void</td>
+                <td class="col-md-4">Sets sound listener volume at given index of soundListeners array, from 0 to 1</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">setSoundSourceSpeed(index:Int,rate:Float):Void</td>
+                <td class="col-md-4">Sets sound speed at given index of soundSources array, from 0 to 10</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">playSoundSource(index:Int):Void</td>
+                <td class="col-md-4">Plays sound at given index of soundSources array</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">pauseSoundSource(index:Int):Void</td>
+                <td class="col-md-4">Pauses playing sound at given index of soundSources array</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">stopSoundSource(index:Int):Void</td>
+                <td class="col-md-4">Stops playing sound at given index of soundSources array</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">setSoundSourceVolume(index:Int,vol:Float):Void</td>
+                <td class="col-md-4">Sets sound source volume at given index of soundSources array, from 0 to 1</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">createSoundElement(name:String):DomElement</td>
+                <td class="col-md-4">Creates Audio tag with sound of same name if it exists in data Object</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">setBlendShape(index:int,targetName:String,target:Float,time:Float):Void</td>
+                <td class="col-md-4">Fades blendShape to given target weight with duration at given index of blendshapes array</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">playAnimation(index:int,clipName:String,fade:Float,playPrevOnFinish:Boolean):Void</td>
+                <td class="col-md-4">Fades in animation with given clip name at given index of animations array, if playPrevOnFinish set to true, than previous looped animation starts playing when clipped animation finishes</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">stopAnimation(index:int):Void</td>
+                <td class="col-md-4">Stops animation at given index of animations array</td>
               </tr>
             </tbody>
           </table>

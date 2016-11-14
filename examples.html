@@ -11,6 +11,15 @@
     <title>Lozi</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+	<style>
+	.source_btn
+	{
+		border-radius:0px;
+		padding:5px 0px;
+		width:100%;
+		margin-top:-5px;
+	}
+	</style>
 </head>
 
 <body role="document">
@@ -36,36 +45,40 @@
     <div class="page-header">
         <h1>Examples</h1>
     </div>
-	Horse Animation
-    <div class="embed-responsive embed-responsive-16by9">
-		<iframe class="embed-responsive-item" src="example.html?example=horse"></iframe>
+	Helicopter By Aegis Technologies
+    <div class="embed-responsive embed-responsive-16by9" style="height:100%; padding-bottom:0px;">
+		<iframe class="embed-responsive-item" src="examples/helicopter.html" style="position:relative; min-height:400px;"></iframe>
+		<button type="button" class="btn btn-lg btn-success source_btn" data-toggle="collapse" data-target="#helicopter_source">View Source</button>
+		<div class="bootstrap-demo">
+			<pre id="helicopter_source" class="collapse">
+			</pre>
+		</div>
 	</div>
-	Asset By Dootsy Development
     <div class="page-header">
     </div>
-	Mummy animation
-    <div class="embed-responsive embed-responsive-16by9">
-		<iframe class="embed-responsive-item" src="example.html?example=mummy"></iframe>
+	Mummy By Ricochet
+    <div class="embed-responsive embed-responsive-16by9" style="height:100%; padding-bottom:0px;">
+		<iframe class="embed-responsive-item" src="examples/mummy.html" style="position:relative; min-height:400px;"></iframe>
+		<button type="button" class="btn btn-lg btn-success source_btn" data-toggle="collapse" data-target="#mummy_source">View Source</button>
+		<div class="bootstrap-demo">
+			<pre id="mummy_source" class="collapse">
+			</pre>
+		</div>
 	</div>
-	Asset By Ricochet
-    <div class="page-header">
-    </div>
-	Canyon
-	<div class="embed-responsive embed-responsive-16by9">
-		<iframe class="embed-responsive-item" src="example.html?example=canyon"></iframe>
-	</div>
-	Asset By TripleBrick
-    <div class="page-header">
-    </div>
-	Reflection test
-	<div class="embed-responsive embed-responsive-16by9">
-		<iframe class="embed-responsive-item" src="example.html?example=reflection"></iframe>
-	</div>
-	Skybox Asset By G.E. TeamDev
-    <div class="page-header">
+	<div class="page-header">
     </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
 <script src="js/bootstrap.min.js"></script>
+<script>
+	$.get( "examples/helicopter.html", function( data )
+	{
+		$('#helicopter_source').text(data);
+	});
+	$.get( "examples/mummy.html", function( data )
+	{
+		$('#mummy_source').text(data);
+	});
+</script>
 </body>
 </html>

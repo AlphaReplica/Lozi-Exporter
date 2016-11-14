@@ -33,6 +33,17 @@
         <h1>Lozi</h1>
         <p>Export from Unity3D to WebGL</p>
     </div>
+	<div class="page-header">
+        <h1>What is it for?</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <p>Lozi is a solution to export assets from unity3D to three.js, currently only three.js supported, but other engines could be added with little effort</p>
+            <p>Why to use it? it saves time and saves you from hysteria when trying to export models properly from 3D editor, with a little setup you're ready to go, besides exporting models, it can export objects hierarchy with transforms, lights, cameras, animations, sounds, textures and pack everything into single javascript file</p>
+        </div>
+        
+    </div>
+	
     <div class="page-header">
         <h1>What it exports</h1>
     </div>
@@ -97,6 +108,9 @@
                 <tr>
                     <td>Material Type (Standard,Lit,Phong,Lambert)</td>
                 </tr>
+                <tr>
+                    <td>Materials per face</td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -134,7 +148,10 @@
                     <td>Texture2D</td>
                 </tr>
                 <tr>
-                    <td>Cubemap (Legacy Only)</td>
+                    <td>Cubemap</td>
+                </tr>
+                <tr>
+                    <td>Substance generated textures</td>
                 </tr>
                 </tbody>
             </table>
@@ -189,6 +206,115 @@
                 </tr>
                 <tr>
                     <td>Transform (Rotation,Position,Scale)</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <table class="table table-striped">
+                <tr>
+                    <th style="background-color: #5cb85c; color: #ffffff">Audio</th>
+                </tr>
+                <tbody>
+                <tr>
+                    <td>Audio Clips (mp3, wav, ogg)</td>
+                </tr>
+                <tr>
+                    <td>Audio Sources</td>
+                </tr>
+                <tr>
+                    <td>Loop, Mute, Play On Awake, Spread</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+		
+        <div class="col-md-6">
+            <table class="table table-striped">
+                <tr>
+                    <th style="background-color: #5cb85c; color: #ffffff">Colliders</th>
+                </tr>
+                <tbody>
+                <tr>
+                    <td>Box Collider</td>
+                </tr>
+                <tr>
+                    <td>Sphere Collider</td>
+                </tr>
+                <tr>
+                    <td>Capsule Collider</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <table class="table table-striped">
+                <tr>
+                    <th style="background-color: #5cb85c; color: #ffffff">Monobehaviour public properties</th>
+                </tr>
+                <tbody>
+                <tr>
+                    <td>Int</td>
+                </tr>
+                <tr>
+                    <td>float</td>
+                </tr>
+                <tr>
+                    <td>Boolean</td>
+                </tr>
+                <tr>
+                    <td>String</td>
+                </tr>
+                <tr>
+                    <td>Rect</td>
+                </tr>
+                <tr>
+                    <td>Vector2</td>
+                </tr>
+                <tr>
+                    <td>Vector3</td>
+                </tr>
+                <tr>
+                    <td>Vector4</td>
+                </tr>
+                <tr>
+                    <td>Material</td>
+                </tr>
+                <tr>
+                    <td>Texture2D</td>
+                </tr>
+                <tr>
+                    <td>Cubemap</td>
+                </tr>
+                <tr>
+                    <td>Mesh</td>
+                </tr>
+                <tr>
+                    <td>AudioClip</td>
+                </tr>
+                <tr>
+                    <td>AudioSource</td>
+                </tr>
+                <tr>
+                    <td>Animation</td>
+                </tr>
+                <tr>
+                    <td>AnimationClip</td>
+                </tr>
+                <tr>
+                    <td>Collider</td>
+                </tr>
+                <tr>
+                    <td>Camera</td>
+                </tr>
+                <tr>
+                    <td>Light</td>
+                </tr>
+                <tr>
+                    <td>Object</td>
+                </tr>
+                <tr>
+                    <td>Arrays of supported types</td>
                 </tr>
                 </tbody>
             </table>
