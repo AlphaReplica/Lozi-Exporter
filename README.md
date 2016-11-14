@@ -13,7 +13,7 @@ What it exports:<br>
 7. Light data export<br>
 8. Camera data export<br>
 9. MonoBehaviour script public properties<br>
-10. Colliders
+10. Colliders<br>
 11. Sounds
 <br>
 
