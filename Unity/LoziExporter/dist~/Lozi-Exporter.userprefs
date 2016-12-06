@@ -1,17 +1,24 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="..\Src\UI\Views\TexturesView.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="AssemblyInfo.cs">
     <Files>
-      <File FileName="..\Src\Exporter\Object\LoziLight.cs" Line="55" Column="4" />
-      <File FileName="..\Src\Exporter\Object\LoziObject.cs" Line="1" Column="1" />
-      <File FileName="..\Src\Exporter\Object\LoziCamera.cs" Line="1" Column="1" />
-      <File FileName="d:\Dropbox\axali3\Lozi6\New Unity Project2\New Unity Project\Assets\LoziExporter\Src\UI\Views\HierarchyView.cs" Line="1" Column="1" />
-      <File FileName="..\Src\Exporter\Material\LoziMaterial.cs" Line="1" Column="1" />
-      <File FileName="..\Src\UI\LoziExporterUI.cs" Line="198" Column="5" />
-      <File FileName="..\Src\UI\LoziExporterUIResources.cs" Line="1" Column="1" />
-      <File FileName="..\Src\Exporter\Texture\LoziTexture.cs" Line="1" Column="1" />
-      <File FileName="..\Src\UI\Views\TexturesView.cs" Line="26" Column="3" />
+      <File FileName="..\..\..\..\..\..\..\Dropbox\dragonfly\Dragonfly\Assets\Dragonfly\Script\Ed\Editors\Base\ToolView.cs" Line="15" Column="14" />
+      <File FileName="..\..\..\..\..\..\..\Dropbox\dragonfly\Dragonfly\Assets\Dragonfly\Script\Ed\Editors\Base\EditorView.cs" Line="1" Column="1" />
+      <File FileName="..\..\..\..\..\..\..\Dropbox\dragonfly\Dragonfly\Assets\Dragonfly\Script\Ed\EditorObjects\EditorScene\EditorGrid\EditorArea.cs" Line="1" Column="1" />
+      <File FileName="..\..\..\..\..\..\..\Dropbox\dragonfly\Dragonfly\Assets\Dragonfly\Script\Ed\Editors\Tools\TileChildTool.cs" Line="1" Column="1" />
+      <File FileName="AssemblyInfo.cs" Line="4" Column="1" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Lozi-Exporter" expanded="True">
+            <Node name="References" expanded="True" />
+            <Node name="Src" expanded="True" />
+            <Node name="AssemblyInfo.cs" selected="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />

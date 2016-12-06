@@ -26,7 +26,7 @@ namespace Lozi
 				{
 					for(int num = 0; num < materials.Length; num++)
 					{
-						if(canAddInArray(materials[num]))
+						if(materials[num]!=null && canAddInArray(materials[num]))
 						{
 							int lightMapID  = -1;
 							LoziTexture tex = LoziExporter.instance.textureCollection.getLightMapByGameObject(transform.gameObject);

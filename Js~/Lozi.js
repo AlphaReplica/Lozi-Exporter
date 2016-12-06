@@ -304,6 +304,7 @@ var Lozi =
 					{
 						geometry.meshID = objInfo.id;
 					}
+					
 					if(objInfo.geometry.castShadows)
 					{
 						geometry.castShadow = objInfo.geometry.castShadows;
@@ -312,7 +313,6 @@ var Lozi =
 					{
 						geometry.receiveShadow = objInfo.geometry.recieveShadows;
 					}
-					
 					return geometry;
 				},
 				
@@ -337,7 +337,7 @@ var Lozi =
 					}
 					
 					
-					if(geometry && material && materials && materials.length>0)
+					if(geometry)
 					{
 						if(geometry.hasMorph==false && geometry.hasSkin==false)
 						{
@@ -354,12 +354,11 @@ var Lozi =
 							}
 							
 						}
-						
-						if(geometry.recieveShadows)
+						if(geometry.receiveShadow)
 						{
 							mesh.receiveShadow = geometry.receiveShadow;
 						}
-						if(geometry.castShadows)
+						if(geometry.castShadow)
 						{
 							mesh.castShadow    = geometry.castShadow;
 						}
@@ -367,6 +366,51 @@ var Lozi =
 					return mesh;
 				},
 				
+				combineMeshes:function(obj)
+				{
+					var merged   = [];
+					var buffered = [];
+					var meshCont = new THREE.Object3D();
+					for(var num = 0; num < obj.objects().length; num++)
+					{
+						obj.objects()[num].updateMatrixWorld(true);
+					}
+						
+					for(var num1 = 0; num1 < obj.materials().length; num1++)
+					{
+						var meshFaceMaterial = new THREE.MeshFaceMaterial([obj.materials()[num1]]);
+						
+						var mergeGeometry = new THREE.Geometry();
+						
+						for(var num2 = 0; num2 < obj.meshes().length; num2++)
+						{
+							if(obj.meshes()[num2].material == obj.materials()[num1])
+							{
+								var matrix = obj.meshes()[num2].matrixWorld;
+								var geom   = obj.meshes()[num2].geometry;
+								
+								if(geom.attributes)
+								{
+									geom = new THREE.Geometry().fromBufferGeometry(geom);
+									buffered.push(geom);
+								}
+								mergeGeometry.merge(geom,matrix);
+							}
+						 }
+						 var mergedMesh  = new THREE.Mesh(mergeGeometry, meshFaceMaterial);
+						 mergedMesh.name = "Combined-"+obj.materials()[num1].name;
+						 merged.push(mergedMesh);
+						 meshCont.add( mergedMesh );
+					}
+					Lozi.Utils.clearArray(buffered,Lozi.Static.Geometry.disposeGeometry,1);
+					Lozi.Utils.clearArray(obj.meshes(),Lozi.Static.Geometry.disposeMesh,1,['remove','children']);
+					
+					meshCont.name = "Combined-Meshes";
+					obj.add(meshCont);
+					
+					return merged;
+				},
+	
 				disposeMesh:function(obj)
 				{
 					if(obj.parent)
@@ -852,6 +896,11 @@ var Lozi =
 				return id;
 			},
 			
+			combineMeshes:function(obj)
+			{
+				return Lozi.Libraries.object().Geometry.combineMeshes(obj);
+			},
+			
 			createMeshByGeometryID:function(id,materials,data)
 			{
 				return Lozi.Libraries.object().Geometry.createMeshByGeometryID(id,materials,data);
@@ -887,6 +936,23 @@ var Lozi =
 					}
 				}
 				return materials;
+			},
+			
+			cloneMaterials:function(materials)
+			{
+				var arr = [];
+				
+				if(materials)
+				{
+					for(var num = 0; num < materials.length; num++)
+					{
+						var material   = materials[num].clone();
+						material.matId = materials[num].matId;
+						material.side  = materials[num].side;
+						arr.push(material);
+					}
+				}
+				return arr;
 			},
 			
 			disposeMaterial:function(obj)
@@ -1476,14 +1542,71 @@ var Lozi =
 				return null;
 			},
 			
-			generateLoziObject:function(data,id)
+			getHierarchyObjectByName:function(object,name)
+			{
+				if(object)
+				{
+					if(object.name == name)
+					{
+						return object;
+					}
+					
+					if(object.children)
+					{
+						for(var num = 0; num < object.children.length; num++)
+						{
+							var obj = this.getHierarchyObjectByName(object.children[num],name);
+							
+							if(obj)
+							{
+								return obj;
+							}
+						}
+					}
+				}
+				return null;
+			},
+			
+			getObjectByPath:function(object,path)
+			{
+				var arr 	   = path.split("/");
+				var tempObject = object;
+				
+				for(var num = 0; num < arr.length; num++)
+				{
+					if(tempObject)
+					{
+						tempObject = this.getHierarchyObjectByName(tempObject,arr[num]);
+					}
+				}
+				return tempObject;
+			},
+			
+			getObjectByIdOrPath:function(object,info)
+			{
+				if(info)
+				{
+					if (/[a-zA-Z]/.test(info))
+					{
+						return this.getObjectByPath(object,info);
+					}
+					else
+					{
+						return this.getHierarchyObjectByID(object,info);
+					}
+				}
+				return null;
+			},
+			
+			generateLoziObject:function(data,info,uniqueMaterial)
 			{
 				if(data)
 				{
+					
 					var obj = data.objects;
-					if(id)
+					if(info)
 					{
-						var temp = this.getHierarchyObjectByID(data.objects,id);
+						var temp = this.getObjectByIdOrPath(data.objects,info);
 						
 						if(temp)
 						{
@@ -1497,6 +1620,13 @@ var Lozi =
 					
 					if(type)
 					{
+						var oldMaterials = [];
+						if(uniqueMaterial)
+						{
+							oldMaterials = data.generatedAssets.materials;
+							data.generatedAssets.materials = Lozi.Static.Material.cloneMaterials(oldMaterials)
+						}
+						
 						var child;
 						if(obj.type==Lozi.Static.Object.types.Mesh || obj.type==Lozi.Static.Object.types.SkinnedMesh || obj.meshID)
 						{
@@ -1505,11 +1635,16 @@ var Lozi =
 						}
 						
 						LoziExtendedObject = this.extend(type,LoziObject);
-						var createdObject  = new LoziExtendedObject(data,obj,type);
+						var createdObject  = new LoziExtendedObject(data,obj,type,uniqueMaterial);
 						
 						if(child)
 						{
 							createdObject.add(child);
+						}
+						
+						if(oldMaterials.length>0)
+						{
+							data.generatedAssets.materials = oldMaterials;
 						}
 						
 						Lozi.Static.Sound.setSounds(createdObject);
@@ -1766,9 +1901,9 @@ var Lozi =
 			{
 				setAssets(data);
 				
-				data.createObject = function(id)
+				data.createObject = function(info,uniqueMaterials)
 				{
-					return Lozi.Static.Object.generateLoziObject(data,id);
+					return Lozi.Static.Object.generateLoziObject(data,info,uniqueMaterials);
 				};
 				
 				data.dispose = function()
@@ -1850,11 +1985,11 @@ var Lozi =
 	
 	version:function()
 	{
-		return 0.94;
+		return 0.95;
 	}
 };
 
-var LoziObject = function(data,root,type)
+var LoziObject = function(data,root,type,hasUniqueMaterials)
 {
 	var scope      	    = this;
 	var deltaTime       = 0;
@@ -1862,6 +1997,7 @@ var LoziObject = function(data,root,type)
 	var soundListeners  = [];
 	var geometries      = [];
 	var materials       = [];
+	var uniqueMaterials = [];
 	var meshes          = [];
 	var blendShapes	    = [];
 	var objects         = [];
@@ -2100,6 +2236,10 @@ var LoziObject = function(data,root,type)
 	
 	function init()
 	{
+		if(hasUniqueMaterials)
+		{
+			uniqueMaterials = data.generatedAssets.materials;
+		}
 		createObjectsHierarchy();
 		registerObjects(scope);
 		assignPropertiesToBones();
@@ -2113,9 +2253,9 @@ var LoziObject = function(data,root,type)
 		updateAnimations();
 	}
 	
-	LoziObject.prototype.clone = function()
+	LoziObject.prototype.clone = function(uniqueMaterial)
 	{
-		var cloned = Lozi.Static.Object.generateLoziObject(this.data());
+		var cloned = Lozi.Static.Object.generateLoziObject(this.data(),"",uniqueMaterial);
 		
 		cloned.position.x = this.position.x;
 		cloned.position.y = this.position.y;
@@ -2146,6 +2286,11 @@ var LoziObject = function(data,root,type)
 		
 		arr = Lozi.Utils.getPropertyArray(this.soundSources(),"sound",true);
 		Lozi.Utils.clearArray(this.soundSources(),null);
+		
+		if(uniqueMaterials.length>0)
+		{
+			Lozi.Utils.clearArray(uniqueMaterials,Lozi.Static.Material.disposeMaterial,1);
+		}
 		
 		Lozi.Utils.clearArray(arr,Lozi.Static.Sound.disposeSoundSource,1,['remove','children']);
 		
@@ -2223,6 +2368,11 @@ var LoziObject = function(data,root,type)
 		return activeCamera;
 	}
 	
+	LoziObject.prototype.combineMeshes = function()
+	{
+		meshes = Lozi.Static.Geometry.combineMeshes(this);
+	}
+	
 	LoziObject.prototype.objects = function (getAll)
 	{
 		if(getAll == true)
@@ -2230,6 +2380,11 @@ var LoziObject = function(data,root,type)
 			return allObjects;
 		}
 		return objects;
+	}
+	
+	LoziObject.prototype.getObjectByPath = function (path)
+	{
+		return Lozi.Static.Object.getObjectByPath(this,this.name+((path.length>0) ? "/"+path : ""));
 	}
 	
 	LoziObject.prototype.meshes  = function ()
@@ -2259,7 +2414,26 @@ var LoziObject = function(data,root,type)
 	
 	LoziObject.prototype.materials  = function ()
 	{
+		if(uniqueMaterials.length>0)
+		{
+			return uniqueMaterials;
+		}
 		return data.generatedAssets.materials;
+	}
+	
+	LoziObject.prototype.getMaterialByName = function (name)
+	{
+		if(name && data.generatedAssets.materials)
+		{
+			for(var num = 0; num < data.generatedAssets.materials.length; num++)
+			{
+				if(data.generatedAssets.materials[num].name == name)
+				{
+					return data.generatedAssets.materials[num];
+				}
+			}
+		}
+		return null;
 	}
 	
 	LoziObject.prototype.lights  = function ()

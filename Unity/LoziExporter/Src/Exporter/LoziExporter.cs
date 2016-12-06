@@ -39,7 +39,7 @@ namespace Lozi
 		{
 			get
 			{
-				return "0.94";
+				return "0.95";
 			}
 		}
 

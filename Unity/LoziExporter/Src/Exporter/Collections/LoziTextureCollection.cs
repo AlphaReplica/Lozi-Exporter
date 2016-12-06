@@ -29,13 +29,16 @@ namespace Lozi
 				{
 					for(int num1 = 0; num1 < materials.Length; num1++)
 					{
-						List<Texture> texturesArr = getMaterialTexures(materials[num1]);
-						
-						for(int num2 = 0; num2 < texturesArr.Count; num2++)
+						if(materials[num1]!=null)
 						{
-							if(texturesArr[num2]!=null && canAddInArray(texturesArr[num2]))
+							List<Texture> texturesArr = getMaterialTexures(materials[num1]);
+							
+							for(int num2 = 0; num2 < texturesArr.Count; num2++)
 							{
-								textureCollection.Add(new LoziTexture(texturesArr[num2],false));
+								if(texturesArr[num2]!=null && canAddInArray(texturesArr[num2]))
+								{
+									textureCollection.Add(new LoziTexture(texturesArr[num2],false));
+								}
 							}
 						}
 					}
