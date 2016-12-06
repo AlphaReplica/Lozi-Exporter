@@ -47,8 +47,8 @@
 			  <table class="table table-striped">
 					<tbody>
 					  <tr>
-						<td style="color:#2194CE; font-weight:bold;"; class="col-md-1">createObject(id:Int):LoziObject</td>
-						<td class="col-md-10">Creates loziObject by passed id, if hierarchy doesn't contains object with given id it will create object from data.objects first element, by default id is undefined</td>
+						<td style="color:#2194CE; font-weight:bold;"; class="col-md-1">createObject(id:Object, uniqueMaterials:Boolean):LoziObject</td>
+						<td class="col-md-10">Creates loziObject by passed id or hierarchy path for example: "object1/object2/object3", if hierarchy doesn't contains object with given id it will create object from data.objects first element, by default id is undefined, if uniqueMaterials is true object will be generated with new materials, default is false</td>
 					  </tr>
 					  <tr>
 						<td style="color:#2194CE; font-weight:bold;"; class="col-md-1">dispose():Void</td>
@@ -279,8 +279,12 @@
                 <td class="col-md-4">Updates object's animations</td>
               </tr>
 			  <tr>
-                <td style="color:#2194CE"; class="col-md-6">clone():Object</td>
-                <td class="col-md-4">Clones object and returnes cloned</td>
+                <td style="color:#2194CE"; class="col-md-6">clone(uniqueMaterial:Boolean):Object</td>
+                <td class="col-md-4">Clones object and returnes cloned, if uniqueMaterial is true new materials will be created and assigned to cloned object, default is false</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">combineMeshes():Void</td>
+                <td class="col-md-4">Combines meshes by material</td>
               </tr>
 			  <tr>
 			  <tr>
@@ -308,6 +312,10 @@
                 <td class="col-md-4">Returns array of objects including self and children, if getAll is true bones will be included too, default is false</td>
               </tr>
 			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">getObjectByPath(path:String):Object</td>
+                <td class="col-md-4">Returns object from requested path</td>
+              </tr>
+			  <tr>
                 <td style="color:#2194CE"; class="col-md-6">meshes():Array</td>
                 <td class="col-md-4">Returns array of object's meshes</td>
               </tr>
@@ -330,6 +338,10 @@
 			  <tr>
                 <td style="color:#2194CE"; class="col-md-6">materials():Array</td>
                 <td class="col-md-4">Returns array of generated materials</td>
+              </tr>
+			  <tr>
+                <td style="color:#2194CE"; class="col-md-6">getMaterialByName(name:String):Material</td>
+                <td class="col-md-4">Returns Material with requested name</td>
               </tr>
 			  <tr>
                 <td style="color:#2194CE"; class="col-md-6">lights():Array</td>
